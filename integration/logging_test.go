@@ -91,7 +91,7 @@ func testLogging(t *testing.T, context spec.G, it spec.S) {
 				WithBuildpacks(httpdBuildpack).
 				WithPullPolicy("never").
 				WithEnv(map[string]string{
-					"BP_ROADRUNNER_VERSION": "2.4.43",
+					"BP_ROADRUNNER_VERSION": "2.1.1",
 				}).
 				Execute(name, source)
 			Expect(err).NotTo(HaveOccurred())
@@ -100,7 +100,7 @@ func testLogging(t *testing.T, context spec.G, it spec.S) {
 				MatchRegexp(fmt.Sprintf(`%s \d+\.\d+\.\d+`, buildpackInfo.Buildpack.Name)),
 				"  Resolving Apache HTTP Server version",
 				"    Candidate version sources (in priority order):",
-				`      BP_ROADRUNNER_VERSION -> "2.4.43"`,
+				`      BP_ROADRUNNER_VERSION -> "2.1.1"`,
 				`      buildpack.yml    -> "2.4.*"`,
 				"",
 				MatchRegexp(`    Selected Apache HTTP Server version \(using BP_ROADRUNNER_VERSION\): 2\.4\.\d+`),

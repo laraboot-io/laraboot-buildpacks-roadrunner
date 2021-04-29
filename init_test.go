@@ -8,7 +8,7 @@ import (
 )
 
 func TestUnitHTTPD(t *testing.T) {
-	suite := spec.New("httpd", spec.Report(report.Terminal{}))
+	suite := spec.New("road-runner", spec.Report(report.Terminal{}))
 	suite("Build", testBuild)
 	suite("Detect", testDetect)
 	suite("LogEmitter", testLogEmitter)

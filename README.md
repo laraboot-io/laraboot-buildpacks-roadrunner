@@ -31,8 +31,8 @@ file that looks like the following:
   # be seen in the buildpack.toml file.
   # If you wish to request a specific version, the buildpack supports
   # specifying a semver constraint in the form of "2.*", "2.4.*", or even
-  # "2.4.43".
-  version = "2.4.43"
+  # "2.1.1".
+  version = "2.1.1"
 
   # The Apache HTTPD buildpack supports some non-required metadata options.
   [requires.metadata]
@@ -66,7 +66,7 @@ file](https://github.com/buildpacks/spec/blob/main/extensions/project-descriptor
 The `BP_ROADRUNNER_VERSION` variable allows you to specify the version of RoadRunner Server that is installed.
 
 ```shell
-BP_ROADRUNNER_VERSION=2.4.43
+BP_ROADRUNNER_VERSION=2.1.1
 ```
 
 This will replace the following structure in `buildpack.yml`:
@@ -74,5 +74,5 @@ This will replace the following structure in `buildpack.yml`:
 httpd:
   # this allows you to specify a version constraint for the httpd dependency
   # any valid semver constraints (e.g. 2.* and 2.4.*) are also acceptable
-  version: "2.4.43"
+  version: "2.1.1"
 ```
