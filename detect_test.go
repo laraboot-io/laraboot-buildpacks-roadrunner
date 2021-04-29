@@ -57,13 +57,13 @@ func testDetect(t *testing.T, context spec.G, it spec.S) {
 		Expect(parser.ParseVersionCall.CallCount).To(Equal(0))
 	})
 
-	context("when there is an roadrunner.conf file in the workspace", func() {
+	context("when there is an .rr.yaml file in the workspace", func() {
 		it.Before(func() {
-			_, err := os.Create(filepath.Join(workingDir, "roadrunner.conf"))
+			_, err := os.Create(filepath.Join(workingDir, ".rr.yaml"))
 			Expect(err).NotTo(HaveOccurred())
 		})
 
-		it("returns a DetectResult that provides and required httpd", func() {
+		it("returns a DetectResult that provides and require road-runner", func() {
 			result, err := detect(packit.DetectContext{
 				WorkingDir: workingDir,
 			})
@@ -92,13 +92,13 @@ func testDetect(t *testing.T, context spec.G, it spec.S) {
 
 	context("BP_ROADRUNNER_VERSION is set", func() {
 		it.Before(func() {
-			_, err := os.Create(filepath.Join(workingDir, "roadrunner.conf"))
+			_, err := os.Create(filepath.Join(workingDir, ".rr.yaml"))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(os.Setenv("BP_ROADRUNNER_VERSION", "env-var-version")).To(Succeed())
 		})
 
 		it.After(func() {
-			err := os.Remove(filepath.Join(workingDir, "roadrunner.conf"))
+			err := os.Remove(filepath.Join(workingDir, ".rr.yaml"))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(os.Unsetenv("BP_ROADRUNNER_VERSION")).To(Succeed())
 		})
@@ -139,7 +139,7 @@ func testDetect(t *testing.T, context spec.G, it spec.S) {
 	context("failure cases", func() {
 		context("when ParseVersion fails", func() {
 			it.Before(func() {
-				_, err := os.Create(filepath.Join(workingDir, "roadrunner.conf"))
+				_, err := os.Create(filepath.Join(workingDir, ".rr.yaml"))
 				Expect(err).NotTo(HaveOccurred())
 
 				parser.ParseVersionCall.Returns.Err = errors.New("failed to parse version")

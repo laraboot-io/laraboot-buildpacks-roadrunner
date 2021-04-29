@@ -21,12 +21,12 @@ type BuildPlanMetadata struct {
 	Launch        bool   `toml:"launch"`
 }
 
-//type RRConfig struct {
-//	Rpc    string `toml:"rpc,omitempty"`
-//	Server string `toml:"server,omitempty"`
-//	Httpd  string `toml:"httpd,omitempty"`
-//	Logs   string `toml:"logs,omitempty"`
-//}
+type RRConfig struct {
+	Rpc    string `toml:"rpc,omitempty"`
+	Server string `toml:"server,omitempty"`
+	Httpd  string `toml:"httpd,omitempty"`
+	Logs   string `toml:"logs,omitempty"`
+}
 
 func Detect(parser Parser) packit.DetectFunc {
 	return func(context packit.DetectContext) (packit.DetectResult, error) {
