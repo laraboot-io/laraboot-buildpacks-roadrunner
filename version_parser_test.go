@@ -1,11 +1,11 @@
-package httpd_test
+package roadrunner_test
 
 import (
 	"io/ioutil"
 	"os"
 	"testing"
 
-	"github.com/paketo-buildpacks/httpd"
+	"github.com/laraboot-io/laraboot-buildpacks-roadrunner"
 	"github.com/sclevine/spec"
 
 	. "github.com/onsi/gomega"
@@ -15,11 +15,11 @@ func testVersionParser(t *testing.T, context spec.G, it spec.S) {
 	var (
 		Expect = NewWithT(t).Expect
 
-		versionParser httpd.VersionParser
+		versionParser roadrunner.VersionParser
 	)
 
 	it.Before(func() {
-		versionParser = httpd.NewVersionParser()
+		versionParser = roadrunner.NewVersionParser()
 	})
 
 	context("ParseVersion", func() {

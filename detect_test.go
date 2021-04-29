@@ -1,4 +1,4 @@
-package httpd_test
+package roadrunner_test
 
 import (
 	"errors"
@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/paketo-buildpacks/httpd"
-	"github.com/paketo-buildpacks/httpd/fakes"
+	"github.com/laraboot-io/laraboot-buildpacks-roadrunner"
+	"github.com/laraboot-io/laraboot-buildpacks-roadrunner/fakes"
 	"github.com/paketo-buildpacks/packit"
 	"github.com/sclevine/spec"
 
@@ -34,7 +34,7 @@ func testDetect(t *testing.T, context spec.G, it spec.S) {
 		parser.ParseVersionCall.Returns.Version = "some-version"
 		parser.ParseVersionCall.Returns.VersionSource = "some-version-source"
 
-		detect = httpd.Detect(parser)
+		detect = roadrunner.Detect(parser)
 	})
 
 	it.After(func() {
@@ -49,7 +49,7 @@ func testDetect(t *testing.T, context spec.G, it spec.S) {
 		Expect(result).To(Equal(packit.DetectResult{
 			Plan: packit.BuildPlan{
 				Provides: []packit.BuildPlanProvision{
-					{Name: httpd.PlanDependencyRoadRunner},
+					{Name: roadrunner.PlanDependencyRoadRunner},
 				},
 			},
 		}))
@@ -57,9 +57,9 @@ func testDetect(t *testing.T, context spec.G, it spec.S) {
 		Expect(parser.ParseVersionCall.CallCount).To(Equal(0))
 	})
 
-	context("when there is an httpd.conf file in the workspace", func() {
+	context("when there is an roadrunner.conf file in the workspace", func() {
 		it.Before(func() {
-			_, err := os.Create(filepath.Join(workingDir, "httpd.conf"))
+			_, err := os.Create(filepath.Join(workingDir, "roadrunner.conf"))
 			Expect(err).NotTo(HaveOccurred())
 		})
 
@@ -71,12 +71,12 @@ func testDetect(t *testing.T, context spec.G, it spec.S) {
 			Expect(result).To(Equal(packit.DetectResult{
 				Plan: packit.BuildPlan{
 					Provides: []packit.BuildPlanProvision{
-						{Name: httpd.PlanDependencyRoadRunner},
+						{Name: roadrunner.PlanDependencyRoadRunner},
 					},
 					Requires: []packit.BuildPlanRequirement{
 						{
-							Name: httpd.PlanDependencyRoadRunner,
-							Metadata: httpd.BuildPlanMetadata{
+							Name: roadrunner.PlanDependencyRoadRunner,
+							Metadata: roadrunner.BuildPlanMetadata{
 								Version:       "some-version",
 								VersionSource: "some-version-source",
 								Launch:        true,
@@ -92,13 +92,13 @@ func testDetect(t *testing.T, context spec.G, it spec.S) {
 
 	context("BP_ROADRUNNER_VERSION is set", func() {
 		it.Before(func() {
-			_, err := os.Create(filepath.Join(workingDir, "httpd.conf"))
+			_, err := os.Create(filepath.Join(workingDir, "roadrunner.conf"))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(os.Setenv("BP_ROADRUNNER_VERSION", "env-var-version")).To(Succeed())
 		})
 
 		it.After(func() {
-			err := os.Remove(filepath.Join(workingDir, "httpd.conf"))
+			err := os.Remove(filepath.Join(workingDir, "roadrunner.conf"))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(os.Unsetenv("BP_ROADRUNNER_VERSION")).To(Succeed())
 		})
@@ -111,20 +111,20 @@ func testDetect(t *testing.T, context spec.G, it spec.S) {
 			Expect(result).To(Equal(packit.DetectResult{
 				Plan: packit.BuildPlan{
 					Provides: []packit.BuildPlanProvision{
-						{Name: httpd.PlanDependencyRoadRunner},
+						{Name: roadrunner.PlanDependencyRoadRunner},
 					},
 					Requires: []packit.BuildPlanRequirement{
 						{
-							Name: httpd.PlanDependencyRoadRunner,
-							Metadata: httpd.BuildPlanMetadata{
+							Name: roadrunner.PlanDependencyRoadRunner,
+							Metadata: roadrunner.BuildPlanMetadata{
 								Version:       "env-var-version",
 								VersionSource: "BP_ROADRUNNER_VERSION",
 								Launch:        true,
 							},
 						},
 						{
-							Name: httpd.PlanDependencyRoadRunner,
-							Metadata: httpd.BuildPlanMetadata{
+							Name: roadrunner.PlanDependencyRoadRunner,
+							Metadata: roadrunner.BuildPlanMetadata{
 								Version:       "some-version",
 								VersionSource: "some-version-source",
 								Launch:        true,
@@ -139,7 +139,7 @@ func testDetect(t *testing.T, context spec.G, it spec.S) {
 	context("failure cases", func() {
 		context("when ParseVersion fails", func() {
 			it.Before(func() {
-				_, err := os.Create(filepath.Join(workingDir, "httpd.conf"))
+				_, err := os.Create(filepath.Join(workingDir, "roadrunner.conf"))
 				Expect(err).NotTo(HaveOccurred())
 
 				parser.ParseVersionCall.Returns.Err = errors.New("failed to parse version")

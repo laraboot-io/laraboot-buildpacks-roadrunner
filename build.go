@@ -1,4 +1,4 @@
-package httpd
+package roadrunner
 
 import (
 	"fmt"
@@ -98,7 +98,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 				Processes: []packit.Process{
 					{
 						Type:    "web",
-						Command: fmt.Sprintf("httpd -f %s -k start -DFOREGROUND", filepath.Join(context.WorkingDir, "httpd.conf")),
+						Command: fmt.Sprintf("httpd -f %s -k start -DFOREGROUND", filepath.Join(context.WorkingDir, "roadrunner.conf")),
 					},
 				},
 			},

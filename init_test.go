@@ -1,4 +1,4 @@
-package httpd_test
+package roadrunner_test
 
 import (
 	"testing"

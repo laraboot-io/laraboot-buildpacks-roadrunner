@@ -1,4 +1,4 @@
-package httpd
+package roadrunner
 
 import (
 	"errors"
@@ -31,7 +31,7 @@ func Detect(parser Parser) packit.DetectFunc {
 			},
 		}
 
-		_, err := os.Stat(filepath.Join(context.WorkingDir, "httpd.conf"))
+		_, err := os.Stat(filepath.Join(context.WorkingDir, "roadrunner.conf"))
 		if err != nil {
 			if errors.Is(err, os.ErrNotExist) {
 				return plan, nil

@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/paketo-buildpacks/httpd"
+	"github.com/laraboot-io/laraboot-buildpacks-roadrunner"
 	"github.com/paketo-buildpacks/packit"
 	"github.com/paketo-buildpacks/packit/cargo"
 	"github.com/paketo-buildpacks/packit/chronos"
@@ -14,13 +14,13 @@ import (
 func main() {
 	transport := cargo.NewTransport()
 	dependencyService := postal.NewService(transport)
-	logEmitter := httpd.NewLogEmitter(os.Stdout)
-	versionParser := httpd.NewVersionParser()
+	logEmitter := roadrunner.NewLogEmitter(os.Stdout)
+	versionParser := roadrunner.NewVersionParser()
 	entryResolver := draft.NewPlanner()
 
 	packit.Run(
-		httpd.Detect(versionParser),
-		httpd.Build(
+		roadrunner.Detect(versionParser),
+		roadrunner.Build(
 			entryResolver,
 			dependencyService,
 			chronos.DefaultClock,

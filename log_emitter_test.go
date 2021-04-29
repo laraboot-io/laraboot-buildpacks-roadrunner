@@ -1,10 +1,10 @@
-package httpd_test
+package roadrunner_test
 
 import (
 	"bytes"
 	"testing"
 
-	"github.com/paketo-buildpacks/httpd"
+	"github.com/laraboot-io/laraboot-buildpacks-roadrunner"
 	"github.com/paketo-buildpacks/packit"
 	"github.com/sclevine/spec"
 
@@ -16,12 +16,12 @@ func testLogEmitter(t *testing.T, context spec.G, it spec.S) {
 		Expect = NewWithT(t).Expect
 
 		buffer  *bytes.Buffer
-		emitter httpd.LogEmitter
+		emitter roadrunner.LogEmitter
 	)
 
 	it.Before(func() {
 		buffer = bytes.NewBuffer(nil)
-		emitter = httpd.NewLogEmitter(buffer)
+		emitter = roadrunner.NewLogEmitter(buffer)
 	})
 
 	context("Title", func() {

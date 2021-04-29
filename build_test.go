@@ -1,17 +1,17 @@
-package httpd_test
+package roadrunner_test
 
 import (
 	"bytes"
 	"errors"
 	"fmt"
+	roadrunner "github.com/laraboot-io/laraboot-buildpacks-roadrunner"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
 	"time"
 
-	"github.com/paketo-buildpacks/httpd"
-	"github.com/paketo-buildpacks/httpd/fakes"
+	"github.com/laraboot-io/laraboot-buildpacks-roadrunner/fakes"
 	"github.com/paketo-buildpacks/packit"
 	"github.com/paketo-buildpacks/packit/chronos"
 	"github.com/paketo-buildpacks/packit/postal"
@@ -75,9 +75,9 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 		timestamp = now.Format(time.RFC3339Nano)
 
 		buffer = bytes.NewBuffer(nil)
-		logEmitter := httpd.NewLogEmitter(buffer)
+		logEmitter := roadrunner.NewLogEmitter(buffer)
 
-		build = httpd.Build(entryResolver, dependencyService, clock, logEmitter)
+		build = roadrunner.Build(entryResolver, dependencyService, clock, logEmitter)
 	})
 
 	it.After(func() {
@@ -133,7 +133,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 				Processes: []packit.Process{
 					{
 						Type:    "web",
-						Command: fmt.Sprintf("httpd -f %s -k start -DFOREGROUND", filepath.Join(workingDir, "httpd.conf")),
+						Command: fmt.Sprintf("httpd -f %s -k start -DFOREGROUND", filepath.Join(workingDir, "roadrunner.conf")),
 					},
 				},
 			},
@@ -225,7 +225,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 					Processes: []packit.Process{
 						{
 							Type:    "web",
-							Command: fmt.Sprintf("httpd -f %s -k start -DFOREGROUND", filepath.Join(workingDir, "httpd.conf")),
+							Command: fmt.Sprintf("httpd -f %s -k start -DFOREGROUND", filepath.Join(workingDir, "roadrunner.conf")),
 						},
 					},
 				},
@@ -300,7 +300,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 	context("failure cases", func() {
 		//context("when the httpd layer cannot be retrieved", func() {
 		//	it.Before(func() {
-		//		Expect(ioutil.WriteFile(filepath.Join(layersDir, "httpd.toml"), nil, 0000)).To(Succeed())
+		//		Expect(ioutil.WriteFile(filepath.Join(layersDir, "roadrunner.toml"), nil, 0000)).To(Succeed())
 		//	})
 		//
 		//	it("returns an error", func() {

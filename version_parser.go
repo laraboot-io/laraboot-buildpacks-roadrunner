@@ -1,4 +1,4 @@
-package httpd
+package roadrunner
 
 import (
 	"errors"
@@ -35,9 +35,9 @@ func (v VersionParser) ParseVersion(path string) (string, string, error) {
 		return "", "", fmt.Errorf("failed to parse buildpack.yml: %w", err)
 	}
 
-	if buildpack.Httpd.Version == "" {
+	if buildpack.roadrunner.Version == "" {
 		return "*", "", nil
 	}
 
-	return buildpack.Httpd.Version, "buildpack.yml", nil
+	return buildpack.roadrunner.Version, "buildpack.yml", nil
 }

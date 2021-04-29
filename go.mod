@@ -1,4 +1,4 @@
-module github.com/paketo-buildpacks/httpd
+module github.com/laraboot-io/laraboot-buildpacks-roadrunner
 
 go 1.16
 
