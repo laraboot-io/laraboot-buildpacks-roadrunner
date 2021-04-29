@@ -21,6 +21,13 @@ type BuildPlanMetadata struct {
 	Launch        bool   `toml:"launch"`
 }
 
+//type RRConfig struct {
+//	Rpc    string `toml:"rpc,omitempty"`
+//	Server string `toml:"server,omitempty"`
+//	Httpd  string `toml:"httpd,omitempty"`
+//	Logs   string `toml:"logs,omitempty"`
+//}
+
 func Detect(parser Parser) packit.DetectFunc {
 	return func(context packit.DetectContext) (packit.DetectResult, error) {
 		plan := packit.DetectResult{
@@ -31,7 +38,7 @@ func Detect(parser Parser) packit.DetectFunc {
 			},
 		}
 
-		_, err := os.Stat(filepath.Join(context.WorkingDir, "roadrunner.conf"))
+		_, err := os.Stat(filepath.Join(context.WorkingDir, ".rr.yaml"))
 		if err != nil {
 			if errors.Is(err, os.ErrNotExist) {
 				return plan, nil
