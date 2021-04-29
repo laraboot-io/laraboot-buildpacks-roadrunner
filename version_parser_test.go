@@ -39,7 +39,7 @@ func testVersionParser(t *testing.T, context spec.G, it spec.S) {
 				file, err := ioutil.TempFile("", "buildpack.yml")
 				Expect(err).NotTo(HaveOccurred())
 
-				_, err = file.WriteString(`{"httpd": {"version": "some-version"}}`)
+				_, err = file.WriteString(`{"roadrunner": {"version": "some-version"}}`)
 				Expect(err).NotTo(HaveOccurred())
 
 				path = file.Name()
@@ -58,7 +58,7 @@ func testVersionParser(t *testing.T, context spec.G, it spec.S) {
 				Expect(versionSource).To(Equal("buildpack.yml"))
 			})
 
-			context("when there is not httpd version in the buildpack.yml", func() {
+			context("when there is not roadrunner version in the buildpack.yml", func() {
 				it.Before(func() {
 					err := ioutil.WriteFile(path, []byte(`{"some-thing": {"version": "some-version"}}`), 0644)
 					Expect(err).NotTo(HaveOccurred())
