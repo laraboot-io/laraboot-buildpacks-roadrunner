@@ -62,11 +62,11 @@ variables at build time either directly (ex. `pack build my-app --env
 BP_ENVIRONMENT_VARIABLE=some-value`) or through a [`project.toml`
 file](https://github.com/buildpacks/spec/blob/main/extensions/project-descriptor.md)
 
-### `BP_HTTPD_VERSION`
-The `BP_HTTPD_VERSION` variable allows you to specify the version of Apache HTTP Server that is installed.
+### `BP_ROADRUNNER_VERSION`
+The `BP_ROADRUNNER_VERSION` variable allows you to specify the version of RoadRunner Server that is installed.
 
 ```shell
-BP_HTTPD_VERSION=2.4.43
+BP_ROADRUNNER_VERSION=2.4.43
 ```
 
 This will replace the following structure in `buildpack.yml`:

@@ -52,7 +52,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 		entryResolver.ResolveCall.Returns.BuildpackPlanEntry = packit.BuildpackPlanEntry{
 			Name: "http",
 			Metadata: map[string]interface{}{
-				"version-source": "BP_HTTPD_VERSION",
+				"version-source": "BP_ROADRUNNER_VERSION",
 				"version":        "some-env-var-version",
 				"launch":         true,
 			},
@@ -101,7 +101,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 					{
 						Name: "httpd",
 						Metadata: map[string]interface{}{
-							"version-source": "BP_HTTPD_VERSION",
+							"version-source": "BP_ROADRUNNER_VERSION",
 							"version":        "some-env-var-version",
 							"launch":         true,
 						},
@@ -162,7 +162,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 			entryResolver.ResolveCall.Returns.BuildpackPlanEntry = packit.BuildpackPlanEntry{
 				Name: "http",
 				Metadata: map[string]interface{}{
-					"version-source": "BP_HTTPD_VERSION",
+					"version-source": "BP_ROADRUNNER_VERSION",
 					"version":        "2.4.*",
 					"launch":         true,
 				},
@@ -193,7 +193,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 						{
 							Name: "httpd",
 							Metadata: map[string]interface{}{
-								"version-source": "BP_HTTPD_VERSION",
+								"version-source": "BP_ROADRUNNER_VERSION",
 								"version":        "2.4.*",
 								"launch":         true,
 							},
@@ -293,7 +293,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 			Expect(dependencyService.ResolveCall.Receives.Stack).To(Equal("some-stack"))
 
 			Expect(buffer.String()).To(ContainSubstring("WARNING: Setting the server version through buildpack.yml will be deprecated soon in Apache HTTP Server Buildpack v2.0.0"))
-			Expect(buffer.String()).To(ContainSubstring("Please specify the version through the $BP_HTTPD_VERSION environment variable instead. See docs for more information."))
+			Expect(buffer.String()).To(ContainSubstring("Please specify the version through the $BP_ROADRUNNER_VERSION environment variable instead. See docs for more information."))
 		})
 	})
 

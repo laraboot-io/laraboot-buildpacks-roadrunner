@@ -65,7 +65,7 @@ func testLogging(t *testing.T, context spec.G, it spec.S) {
 			MatchRegexp(`    Selected Apache HTTP Server version \(using buildpack\.yml\): 2\.4\.\d+`),
 			"",
 			"    WARNING: Setting the server version through buildpack.yml will be deprecated soon in Apache HTTP Server Buildpack v2.0.0.",
-			"    Please specify the version through the $BP_HTTPD_VERSION environment variable instead. See docs for more information.",
+			"    Please specify the version through the $BP_ROADRUNNER_VERSION environment variable instead. See docs for more information.",
 			"",
 			"  Executing build process",
 			MatchRegexp(`    Installing Apache HTTP Server \d+\.\d+\.\d+`),
@@ -77,7 +77,7 @@ func testLogging(t *testing.T, context spec.G, it spec.S) {
 		))
 	})
 
-	context("the app is built with BP_HTTPD_VERSION set", func() {
+	context("the app is built with BP_ROADRUNNER_VERSION set", func() {
 		it("builds the app with the specified version", func() {
 			var (
 				err  error
@@ -91,7 +91,7 @@ func testLogging(t *testing.T, context spec.G, it spec.S) {
 				WithBuildpacks(httpdBuildpack).
 				WithPullPolicy("never").
 				WithEnv(map[string]string{
-					"BP_HTTPD_VERSION": "2.4.43",
+					"BP_ROADRUNNER_VERSION": "2.4.43",
 				}).
 				Execute(name, source)
 			Expect(err).NotTo(HaveOccurred())
@@ -100,10 +100,10 @@ func testLogging(t *testing.T, context spec.G, it spec.S) {
 				MatchRegexp(fmt.Sprintf(`%s \d+\.\d+\.\d+`, buildpackInfo.Buildpack.Name)),
 				"  Resolving Apache HTTP Server version",
 				"    Candidate version sources (in priority order):",
-				`      BP_HTTPD_VERSION -> "2.4.43"`,
+				`      BP_ROADRUNNER_VERSION -> "2.4.43"`,
 				`      buildpack.yml    -> "2.4.*"`,
 				"",
-				MatchRegexp(`    Selected Apache HTTP Server version \(using BP_HTTPD_VERSION\): 2\.4\.\d+`),
+				MatchRegexp(`    Selected Apache HTTP Server version \(using BP_ROADRUNNER_VERSION\): 2\.4\.\d+`),
 				"",
 				"  Executing build process",
 				MatchRegexp(`    Installing Apache HTTP Server \d+\.\d+\.\d+`),

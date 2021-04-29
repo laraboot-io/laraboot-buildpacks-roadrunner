@@ -30,7 +30,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 		logger.Process("Resolving Apache HTTP Server version")
 
 		priorities := []interface{}{
-			"BP_HTTPD_VERSION",
+			"BP_ROADRUNNER_VERSION",
 			"buildpack.yml",
 		}
 		entry, sortedEntries := entries.Resolve("httpd", context.Plan.Entries, priorities)
@@ -57,7 +57,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 		if source == "buildpack.yml" {
 			nextMajorVersion := semver.MustParse(context.BuildpackInfo.Version).IncMajor()
 			logger.Subprocess("WARNING: Setting the server version through buildpack.yml will be deprecated soon in Apache HTTP Server Buildpack v%s.", nextMajorVersion.String())
-			logger.Subprocess("Please specify the version through the $BP_HTTPD_VERSION environment variable instead. See docs for more information.")
+			logger.Subprocess("Please specify the version through the $BP_ROADRUNNER_VERSION environment variable instead. See docs for more information.")
 			logger.Break()
 		}
 

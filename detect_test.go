@@ -90,17 +90,17 @@ func testDetect(t *testing.T, context spec.G, it spec.S) {
 		})
 	})
 
-	context("BP_HTTPD_VERSION is set", func() {
+	context("BP_ROADRUNNER_VERSION is set", func() {
 		it.Before(func() {
 			_, err := os.Create(filepath.Join(workingDir, "httpd.conf"))
 			Expect(err).NotTo(HaveOccurred())
-			Expect(os.Setenv("BP_HTTPD_VERSION", "env-var-version")).To(Succeed())
+			Expect(os.Setenv("BP_ROADRUNNER_VERSION", "env-var-version")).To(Succeed())
 		})
 
 		it.After(func() {
 			err := os.Remove(filepath.Join(workingDir, "httpd.conf"))
 			Expect(err).NotTo(HaveOccurred())
-			Expect(os.Unsetenv("BP_HTTPD_VERSION")).To(Succeed())
+			Expect(os.Unsetenv("BP_ROADRUNNER_VERSION")).To(Succeed())
 		})
 
 		it("returns a DetectResult that required specified version of httpd", func() {
@@ -118,7 +118,7 @@ func testDetect(t *testing.T, context spec.G, it spec.S) {
 							Name: httpd.PlanDependencyRoadRunner,
 							Metadata: httpd.BuildPlanMetadata{
 								Version:       "env-var-version",
-								VersionSource: "BP_HTTPD_VERSION",
+								VersionSource: "BP_ROADRUNNER_VERSION",
 								Launch:        true,
 							},
 						},

@@ -1,26 +1,26 @@
 api = "0.4"
 
 [buildpack]
-  id = "laraboot-io/laraboot-buildpacks-roadrunner"
-    name = "Laraboot RoadRunner Server Buildpack"
-  homepage = "https://github.com/laraboot-io/laraboot-buildpacks-roadrunner"
+id = "laraboot-io/laraboot-buildpacks-roadrunner"
+name = "Laraboot RoadRunner Server Buildpack"
+homepage = "https://github.com/laraboot-io/laraboot-buildpacks-roadrunner"
 
 [metadata]
-  include-files = ["bin/build", "bin/detect", "bin/run", "buildpack.toml"]
-  pre-package = "./scripts/build.sh"
+include-files = ["bin/build", "bin/detect", "bin/run", "buildpack.toml"]
+pre-package = "./scripts/build.sh"
 
-  [[metadata.dependencies]]
-    id = "road-runner"
-    name = "Road Runner"
-    sha256 = "e049a2fbeae9614ed1617e183b8f7e185706645299ad853699d6bd357aae1be5"
-    source_sha256 = "a497652ab3fc81318cdc2a203090a999150d86461acff97c1065dc910fe10f43"
-    stacks = ["io.buildpacks.stacks.bionic", "org.cloudfoundry.stacks.cflinuxfs3"]
-    uri = "https://github.com/spiral/roadrunner/archive/refs/tags/v2.1.1.tar.gz"
-    version = "2.1.1"
-
-[[stacks]]
-  id = "io.buildpacks.stacks.bionic"
-  mixins = ["libexpat1"]
+[[metadata.dependencies]]
+id = "road-runner"
+name = "Road Runner"
+sha256 = "e049a2fbeae9614ed1617e183b8f7e185706645299ad853699d6bd357aae1be5"
+source_sha256 = "a497652ab3fc81318cdc2a203090a999150d86461acff97c1065dc910fe10f43"
+stacks = ["io.buildpacks.stacks.bionic", "org.cloudfoundry.stacks.cflinuxfs3"]
+uri = "https://github.com/spiral/roadrunner/archive/refs/tags/v2.1.1.tar.gz"
+version = "2.1.1"
 
 [[stacks]]
-  id = "org.cloudfoundry.stacks.cflinuxfs3"
+id = "io.buildpacks.stacks.bionic"
+mixins = ["libexpat1"]
+
+[[stacks]]
+id = "org.cloudfoundry.stacks.cflinuxfs3"
