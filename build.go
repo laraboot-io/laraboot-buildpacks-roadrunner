@@ -36,7 +36,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 		entry, sortedEntries := entries.Resolve("road-runner", context.Plan.Entries, priorities)
 		logger.Candidates(sortedEntries)
 
-		httpdLayer, err := context.Layers.Get("road-runner")
+		roadRunnerLayer, err := context.Layers.Get("road-runner")
 		if err != nil {
 			return packit.BuildResult{}, err
 		}
@@ -61,18 +61,18 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 			logger.Break()
 		}
 
-		if sha, ok := httpdLayer.Metadata["cache_sha"].(string); !ok || sha != dependency.SHA256 {
+		if sha, ok := roadRunnerLayer.Metadata["cache_sha"].(string); !ok || sha != dependency.SHA256 {
 			logger.Process("Executing build process")
 
-			httpdLayer, err = httpdLayer.Reset()
+			roadRunnerLayer, err = roadRunnerLayer.Reset()
 			if err != nil {
 				return packit.BuildResult{}, err
 			}
-			httpdLayer.Launch, _ = entries.MergeLayerTypes("road-runner", context.Plan.Entries)
+			roadRunnerLayer.Launch, _ = entries.MergeLayerTypes("road-runner", context.Plan.Entries)
 
 			logger.Subprocess("Installing RoadRunner Server %s", dependency.Version)
 			duration, err := clock.Measure(func() error {
-				return dependencies.Install(dependency, context.CNBPath, httpdLayer.Path)
+				return dependencies.Install(dependency, context.CNBPath, roadRunnerLayer.Path)
 			})
 			if err != nil {
 				return packit.BuildResult{}, err
@@ -80,20 +80,20 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 			logger.Action("Completed in %s", duration.Round(time.Millisecond))
 			logger.Break()
 
-			httpdLayer.Metadata = map[string]interface{}{
+			roadRunnerLayer.Metadata = map[string]interface{}{
 				"built_at":  clock.Now().Format(time.RFC3339Nano),
 				"cache_sha": dependency.SHA256,
 			}
 
 			logger.Process("Configuring environment")
-			httpdLayer.LaunchEnv.Override("APP_ROOT", context.WorkingDir)
-			httpdLayer.LaunchEnv.Override("SERVER_ROOT", httpdLayer.Path)
+			roadRunnerLayer.LaunchEnv.Override("APP_ROOT", context.WorkingDir)
+			roadRunnerLayer.LaunchEnv.Override("SERVER_ROOT", roadRunnerLayer.Path)
 
-			logger.Environment(httpdLayer.LaunchEnv)
+			logger.Environment(roadRunnerLayer.LaunchEnv)
 		}
 
 		return packit.BuildResult{
-			Layers: []packit.Layer{httpdLayer},
+			Layers: []packit.Layer{roadRunnerLayer},
 			Launch: packit.LaunchMetadata{
 				Processes: []packit.Process{
 					{
