@@ -26,18 +26,18 @@ func (v VersionParser) ParseVersion(path string) (string, string, error) {
 	defer file.Close()
 
 	var buildpack struct {
-		Httpd struct {
+		RoadRunner struct {
 			Version string `yaml:"version"`
-		} `yaml:"httpd"`
+		} `yaml:"roadrunner"`
 	}
 	err = yaml.NewDecoder(file).Decode(&buildpack)
 	if err != nil {
 		return "", "", fmt.Errorf("failed to parse buildpack.yml: %w", err)
 	}
 
-	if buildpack.roadrunner.Version == "" {
+	if buildpack.RoadRunner.Version == "" {
 		return "*", "", nil
 	}
 
-	return buildpack.roadrunner.Version, "buildpack.yml", nil
+	return buildpack.RoadRunner.Version, "buildpack.yml", nil
 }
