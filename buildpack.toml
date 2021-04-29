@@ -12,8 +12,8 @@ pre-package = "./scripts/build.sh"
 [[metadata.dependencies]]
 id = "road-runner"
 name = "Road Runner"
-sha256 = "e049a2fbeae9614ed1617e183b8f7e185706645299ad853699d6bd357aae1be5"
-source_sha256 = "a497652ab3fc81318cdc2a203090a999150d86461acff97c1065dc910fe10f43"
+sha256 = "287d6d94695131d0c0ad4b82efa46b98f2d1cdcfa17bbb634068feafb5db67fa"
+source_sha256 = "287d6d94695131d0c0ad4b82efa46b98f2d1cdcfa17bbb634068feafb5db67fa"
 stacks = ["io.buildpacks.stacks.bionic", "org.cloudfoundry.stacks.cflinuxfs3"]
 uri = "https://github.com/spiral/roadrunner/archive/refs/tags/v2.1.1.tar.gz"
 version = "2.1.1"
