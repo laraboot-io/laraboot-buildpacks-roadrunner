@@ -27,16 +27,16 @@ type DependencyService interface {
 func Build(entries EntryResolver, dependencies DependencyService, clock chronos.Clock, logger LogEmitter) packit.BuildFunc {
 	return func(context packit.BuildContext) (packit.BuildResult, error) {
 		logger.Title(context.BuildpackInfo)
-		logger.Process("Resolving Apache HTTP Server version")
+		logger.Process("Resolving RoadRunner Server version")
 
 		priorities := []interface{}{
 			"BP_ROADRUNNER_VERSION",
 			"buildpack.yml",
 		}
-		entry, sortedEntries := entries.Resolve("httpd", context.Plan.Entries, priorities)
+		entry, sortedEntries := entries.Resolve("road-runner", context.Plan.Entries, priorities)
 		logger.Candidates(sortedEntries)
 
-		httpdLayer, err := context.Layers.Get("httpd")
+		httpdLayer, err := context.Layers.Get("road-runner")
 		if err != nil {
 			return packit.BuildResult{}, err
 		}
@@ -46,7 +46,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 			version = "*"
 		}
 
-		dependency, err := dependencies.Resolve(filepath.Join(context.CNBPath, "buildpack.toml"), "httpd", version, context.Stack)
+		dependency, err := dependencies.Resolve(filepath.Join(context.CNBPath, "buildpack.toml"), "road-runner", version, context.Stack)
 		if err != nil {
 			return packit.BuildResult{}, err
 		}
@@ -68,9 +68,9 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 			if err != nil {
 				return packit.BuildResult{}, err
 			}
-			httpdLayer.Launch, _ = entries.MergeLayerTypes("httpd", context.Plan.Entries)
+			httpdLayer.Launch, _ = entries.MergeLayerTypes("road-runner", context.Plan.Entries)
 
-			logger.Subprocess("Installing Apache HTTP Server %s", dependency.Version)
+			logger.Subprocess("Installing RoadRunner Server %s", dependency.Version)
 			duration, err := clock.Measure(func() error {
 				return dependencies.Install(dependency, context.CNBPath, httpdLayer.Path)
 			})
