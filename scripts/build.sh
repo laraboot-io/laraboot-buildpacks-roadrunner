@@ -28,6 +28,7 @@ function main() {
   mkdir -p "${BUILDPACKDIR}/bin"
 
   run::build
+  run::build
   cmd::build
 }
 

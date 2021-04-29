@@ -49,7 +49,7 @@ func testDetect(t *testing.T, context spec.G, it spec.S) {
 		Expect(result).To(Equal(packit.DetectResult{
 			Plan: packit.BuildPlan{
 				Provides: []packit.BuildPlanProvision{
-					{Name: httpd.PlanDependencyHTTPD},
+					{Name: httpd.PlanDependencyRoadRunner},
 				},
 			},
 		}))
@@ -71,11 +71,11 @@ func testDetect(t *testing.T, context spec.G, it spec.S) {
 			Expect(result).To(Equal(packit.DetectResult{
 				Plan: packit.BuildPlan{
 					Provides: []packit.BuildPlanProvision{
-						{Name: httpd.PlanDependencyHTTPD},
+						{Name: httpd.PlanDependencyRoadRunner},
 					},
 					Requires: []packit.BuildPlanRequirement{
 						{
-							Name: httpd.PlanDependencyHTTPD,
+							Name: httpd.PlanDependencyRoadRunner,
 							Metadata: httpd.BuildPlanMetadata{
 								Version:       "some-version",
 								VersionSource: "some-version-source",
@@ -111,11 +111,11 @@ func testDetect(t *testing.T, context spec.G, it spec.S) {
 			Expect(result).To(Equal(packit.DetectResult{
 				Plan: packit.BuildPlan{
 					Provides: []packit.BuildPlanProvision{
-						{Name: httpd.PlanDependencyHTTPD},
+						{Name: httpd.PlanDependencyRoadRunner},
 					},
 					Requires: []packit.BuildPlanRequirement{
 						{
-							Name: httpd.PlanDependencyHTTPD,
+							Name: httpd.PlanDependencyRoadRunner,
 							Metadata: httpd.BuildPlanMetadata{
 								Version:       "env-var-version",
 								VersionSource: "BP_HTTPD_VERSION",
@@ -123,7 +123,7 @@ func testDetect(t *testing.T, context spec.G, it spec.S) {
 							},
 						},
 						{
-							Name: httpd.PlanDependencyHTTPD,
+							Name: httpd.PlanDependencyRoadRunner,
 							Metadata: httpd.BuildPlanMetadata{
 								Version:       "some-version",
 								VersionSource: "some-version-source",

@@ -8,7 +8,7 @@ import (
 	"github.com/paketo-buildpacks/packit"
 )
 
-const PlanDependencyHTTPD = "httpd"
+const PlanDependencyRoadRunner = "road-runner"
 
 //go:generate faux --interface Parser --output fakes/parser.go
 type Parser interface {
@@ -26,7 +26,7 @@ func Detect(parser Parser) packit.DetectFunc {
 		plan := packit.DetectResult{
 			Plan: packit.BuildPlan{
 				Provides: []packit.BuildPlanProvision{
-					{Name: PlanDependencyHTTPD},
+					{Name: PlanDependencyRoadRunner},
 				},
 			},
 		}
@@ -41,12 +41,12 @@ func Detect(parser Parser) packit.DetectFunc {
 
 		var requirements []packit.BuildPlanRequirement
 
-		if version, ok := os.LookupEnv("BP_HTTPD_VERSION"); ok {
+		if version, ok := os.LookupEnv("BP_ROADRUNNER_VERSION"); ok {
 			requirements = append(requirements, packit.BuildPlanRequirement{
-				Name: PlanDependencyHTTPD,
+				Name: PlanDependencyRoadRunner,
 				Metadata: BuildPlanMetadata{
 					Version:       version,
-					VersionSource: "BP_HTTPD_VERSION",
+					VersionSource: "BP_ROADRUNNER_VERSION",
 					Launch:        true,
 				},
 			})
@@ -59,7 +59,7 @@ func Detect(parser Parser) packit.DetectFunc {
 
 		if version != "" {
 			requirements = append(requirements, packit.BuildPlanRequirement{
-				Name: PlanDependencyHTTPD,
+				Name: PlanDependencyRoadRunner,
 				Metadata: BuildPlanMetadata{
 					Version:       version,
 					VersionSource: versionSource,
