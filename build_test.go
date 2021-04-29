@@ -61,7 +61,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 
 		dependencyService = &fakes.DependencyService{}
 		dependencyService.ResolveCall.Returns.Dependency = postal.Dependency{
-			ID:           "httpd",
+			ID:           "road-runner",
 			SHA256:       "some-sha",
 			Source:       "some-source",
 			SourceSHA256: "some-source-sha",
@@ -86,7 +86,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 		Expect(os.RemoveAll(cnbPath)).To(Succeed())
 	})
 
-	it("builds httpd", func() {
+	it("builds roadrunner", func() {
 		result, err := build(packit.BuildContext{
 			BuildpackInfo: packit.BuildpackInfo{
 				Name:    "Some Buildpack",
@@ -99,7 +99,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 			Plan: packit.BuildpackPlan{
 				Entries: []packit.BuildpackPlanEntry{
 					{
-						Name: "httpd",
+						Name: "road-runner",
 						Metadata: map[string]interface{}{
 							"version-source": "BP_ROADRUNNER_VERSION",
 							"version":        "some-env-var-version",
@@ -113,14 +113,14 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 		Expect(result).To(Equal(packit.BuildResult{
 			Layers: []packit.Layer{
 				{
-					Name:      "httpd",
-					Path:      filepath.Join(layersDir, "httpd"),
+					Name:      "road-runner",
+					Path:      filepath.Join(layersDir, "road-runner"),
 					Launch:    true,
 					SharedEnv: packit.Environment{},
 					BuildEnv:  packit.Environment{},
 					LaunchEnv: packit.Environment{
 						"APP_ROOT.override":    workingDir,
-						"SERVER_ROOT.override": filepath.Join(layersDir, "httpd"),
+						"SERVER_ROOT.override": filepath.Join(layersDir, "road-runner"),
 					},
 					ProcessLaunchEnv: map[string]packit.Environment{},
 					Metadata: map[string]interface{}{
@@ -140,12 +140,12 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 		}))
 
 		Expect(dependencyService.ResolveCall.Receives.Path).To(Equal(filepath.Join(cnbPath, "buildpack.toml")))
-		Expect(dependencyService.ResolveCall.Receives.Name).To(Equal("httpd"))
+		Expect(dependencyService.ResolveCall.Receives.Name).To(Equal("road-runner"))
 		Expect(dependencyService.ResolveCall.Receives.Version).To(Equal("some-env-var-version"))
 		Expect(dependencyService.ResolveCall.Receives.Stack).To(Equal("some-stack"))
 
 		Expect(dependencyService.InstallCall.Receives.Dependency).To(Equal(postal.Dependency{
-			ID:           "httpd",
+			ID:           "road-runner",
 			SHA256:       "some-sha",
 			Source:       "some-source",
 			SourceSHA256: "some-source-sha",
@@ -154,7 +154,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 			Version:      "some-env-var-version",
 		}))
 		Expect(dependencyService.InstallCall.Receives.CnbPath).To(Equal(cnbPath))
-		Expect(dependencyService.InstallCall.Receives.LayerPath).To(Equal(filepath.Join(layersDir, "httpd")))
+		Expect(dependencyService.InstallCall.Receives.LayerPath).To(Equal(filepath.Join(layersDir, "road-runner")))
 	})
 
 	context("when the entry contains a version constraint", func() {
@@ -169,7 +169,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 			}
 
 			dependencyService.ResolveCall.Returns.Dependency = postal.Dependency{
-				ID:           "httpd",
+				ID:           "road-runner",
 				SHA256:       "some-sha",
 				Source:       "some-source",
 				SourceSHA256: "some-source-sha",
@@ -191,7 +191,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 				Plan: packit.BuildpackPlan{
 					Entries: []packit.BuildpackPlanEntry{
 						{
-							Name: "httpd",
+							Name: "road-runner",
 							Metadata: map[string]interface{}{
 								"version-source": "BP_ROADRUNNER_VERSION",
 								"version":        "2.4.*",
@@ -205,14 +205,14 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 			Expect(result).To(Equal(packit.BuildResult{
 				Layers: []packit.Layer{
 					{
-						Name:      "httpd",
-						Path:      filepath.Join(layersDir, "httpd"),
+						Name:      "road-runner",
+						Path:      filepath.Join(layersDir, "road-runner"),
 						Launch:    true,
 						SharedEnv: packit.Environment{},
 						BuildEnv:  packit.Environment{},
 						LaunchEnv: packit.Environment{
 							"APP_ROOT.override":    workingDir,
-							"SERVER_ROOT.override": filepath.Join(layersDir, "httpd"),
+							"SERVER_ROOT.override": filepath.Join(layersDir, "road-runner"),
 						},
 						ProcessLaunchEnv: map[string]packit.Environment{},
 						Metadata: map[string]interface{}{
@@ -232,12 +232,12 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 			}))
 
 			Expect(dependencyService.ResolveCall.Receives.Path).To(Equal(filepath.Join(cnbPath, "buildpack.toml")))
-			Expect(dependencyService.ResolveCall.Receives.Name).To(Equal("httpd"))
+			Expect(dependencyService.ResolveCall.Receives.Name).To(Equal("road-runner"))
 			Expect(dependencyService.ResolveCall.Receives.Version).To(Equal("2.4.*"))
 			Expect(dependencyService.ResolveCall.Receives.Stack).To(Equal("some-stack"))
 
 			Expect(dependencyService.InstallCall.Receives.Dependency).To(Equal(postal.Dependency{
-				ID:           "httpd",
+				ID:           "road-runner",
 				SHA256:       "some-sha",
 				Source:       "some-source",
 				SourceSHA256: "some-source-sha",
@@ -246,7 +246,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 				Version:      "2.4.41",
 			}))
 			Expect(dependencyService.InstallCall.Receives.CnbPath).To(Equal(cnbPath))
-			Expect(dependencyService.InstallCall.Receives.LayerPath).To(Equal(filepath.Join(layersDir, "httpd")))
+			Expect(dependencyService.InstallCall.Receives.LayerPath).To(Equal(filepath.Join(layersDir, "road-runner")))
 		})
 	})
 
@@ -275,7 +275,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 				Plan: packit.BuildpackPlan{
 					Entries: []packit.BuildpackPlanEntry{
 						{
-							Name: "httpd",
+							Name: "road-runner",
 							Metadata: map[string]interface{}{
 								"version-source": "buildpack.yml",
 								"version":        "some-bp-yml-version",
@@ -288,7 +288,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 
 			Expect(err).NotTo(HaveOccurred())
 			Expect(dependencyService.ResolveCall.Receives.Path).To(Equal(filepath.Join(cnbPath, "buildpack.toml")))
-			Expect(dependencyService.ResolveCall.Receives.Name).To(Equal("httpd"))
+			Expect(dependencyService.ResolveCall.Receives.Name).To(Equal("road-runner"))
 			Expect(dependencyService.ResolveCall.Receives.Version).To(Equal("some-bp-yml-version"))
 			Expect(dependencyService.ResolveCall.Receives.Stack).To(Equal("some-stack"))
 
@@ -315,7 +315,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 					Stack:      "some-stack",
 					Plan: packit.BuildpackPlan{
 						Entries: []packit.BuildpackPlanEntry{
-							{Name: "httpd", Metadata: map[string]interface{}{"launch": true}},
+							{Name: "road-runner", Metadata: map[string]interface{}{"launch": true}},
 						},
 					},
 				})
@@ -340,7 +340,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 					Stack:      "some-stack",
 					Plan: packit.BuildpackPlan{
 						Entries: []packit.BuildpackPlanEntry{
-							{Name: "httpd", Metadata: map[string]interface{}{"launch": true}},
+							{Name: "road-runner", Metadata: map[string]interface{}{"launch": true}},
 						},
 					},
 				})
@@ -365,7 +365,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 					Stack:      "some-stack",
 					Plan: packit.BuildpackPlan{
 						Entries: []packit.BuildpackPlanEntry{
-							{Name: "httpd", Metadata: map[string]interface{}{"launch": true}},
+							{Name: "road-runner", Metadata: map[string]interface{}{"launch": true}},
 						},
 					},
 				})
