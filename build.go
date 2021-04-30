@@ -117,7 +117,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 
 					err = tar.Execute(pexec.Execution{
 						Args: []string{
-							"-xvf",
+							"-zxvf",
 							tarFile,
 						},
 						Stdout: os.Stdout,
