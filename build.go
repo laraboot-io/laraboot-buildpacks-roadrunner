@@ -94,7 +94,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 				logger.Subprocess("Downloading RoadRunner Server %s", dependency.URI)
 				duration, err = clock.Measure(func() error {
 
-					return RunProcs(procmgr.Procs{
+					err := RunProcs(procmgr.Procs{
 						Processes: map[string]procmgr.Proc{
 							"downloadRoadRunner": {
 								Command: "curl",
@@ -103,6 +103,15 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 									filepath.Join(roadRunnerLayer.Path, "roadrunner.tar.gz"),
 								},
 							},
+						},
+					})
+
+					if err != nil {
+						return err
+					}
+
+					err = RunProcs(procmgr.Procs{
+						Processes: map[string]procmgr.Proc{
 							"untarRoadRunner": {
 								Command: "tar",
 								Args: []string{"-zxvf",
@@ -118,6 +127,11 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 						},
 					})
 
+					if err != nil {
+						return err
+					}
+
+					return nil
 				})
 
 				if err != nil {
