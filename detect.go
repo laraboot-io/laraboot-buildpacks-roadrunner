@@ -9,6 +9,7 @@ import (
 )
 
 const PlanDependencyRoadRunner = "road-runner"
+const PlanDependencyGolang = "go"
 
 //go:generate faux --interface Parser --output fakes/parser.go
 type Parser interface {
@@ -19,6 +20,7 @@ type BuildPlanMetadata struct {
 	Version       string `toml:"version,omitempty"`
 	VersionSource string `toml:"version-source,omitempty"`
 	Launch        bool   `toml:"launch"`
+	Build         bool   `toml:"build"`
 }
 
 type RRConfig struct {
@@ -47,6 +49,16 @@ func Detect(parser Parser) packit.DetectFunc {
 		}
 
 		var requirements []packit.BuildPlanRequirement
+
+		// Require Golang
+		requirements = append(requirements, packit.BuildPlanRequirement{
+			Name: PlanDependencyGolang,
+			Metadata: BuildPlanMetadata{
+				Version: "1.*",
+				Build:   true,
+				Launch:  false,
+			},
+		})
 
 		if version, ok := os.LookupEnv("BP_ROADRUNNER_VERSION"); ok {
 			requirements = append(requirements, packit.BuildPlanRequirement{
