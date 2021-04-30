@@ -62,7 +62,7 @@ func testLogging(t *testing.T, context spec.G, it spec.S) {
 			"    Candidate version sources (in priority order):",
 			`      buildpack.yml -> "2.1.*"`,
 			"",
-			MatchRegexp(`    Selected RoadRunner Server version \(using buildpack\.yml\): 2\.1\.\d+`),
+			MatchRegexp(`    Selected Road Runner version \(using buildpack\.yml\): 2\.1\.\d+`),
 			"",
 			"    WARNING: Setting the server version through buildpack.yml will be deprecated soon in Apache HTTP Server Buildpack v2.0.0.",
 			"    Please specify the version through the $BP_ROADRUNNER_VERSION environment variable instead. See docs for more information.",
@@ -73,7 +73,7 @@ func testLogging(t *testing.T, context spec.G, it spec.S) {
 			"",
 			"  Configuring environment",
 			`    APP_ROOT    -> "/workspace"`,
-			fmt.Sprintf(`    SERVER_ROOT -> "/layers/%s/httpd"`, strings.ReplaceAll(buildpackInfo.Buildpack.ID, "/", "_")),
+			fmt.Sprintf(`    SERVER_ROOT -> "/layers/%s/road-runner"`, strings.ReplaceAll(buildpackInfo.Buildpack.ID, "/", "_")),
 		))
 	})
 
@@ -103,7 +103,7 @@ func testLogging(t *testing.T, context spec.G, it spec.S) {
 				`      BP_ROADRUNNER_VERSION -> "2.1.1"`,
 				`      buildpack.yml    -> "2.1.*"`,
 				"",
-				MatchRegexp(`    Selected RoadRunner Server version \(using BP_ROADRUNNER_VERSION\): 2\.4\.\d+`),
+				MatchRegexp(`    Selected Road Runner version \(using BP_ROADRUNNER_VERSION\): 2\.1\.\d+`),
 				"",
 				"  Executing build process",
 				MatchRegexp(`    Installing RoadRunner Server \d+\.\d+\.\d+`),
@@ -111,7 +111,7 @@ func testLogging(t *testing.T, context spec.G, it spec.S) {
 				"",
 				"  Configuring environment",
 				`    APP_ROOT    -> "/workspace"`,
-				fmt.Sprintf(`    SERVER_ROOT -> "/layers/%s/httpd"`, strings.ReplaceAll(buildpackInfo.Buildpack.ID, "/", "_")),
+				fmt.Sprintf(`    SERVER_ROOT -> "/layers/%s/road-runner"`, strings.ReplaceAll(buildpackInfo.Buildpack.ID, "/", "_")),
 			))
 
 		})
