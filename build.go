@@ -98,26 +98,38 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 					tar := pexec.NewExecutable("tar")
 					ls := pexec.NewExecutable("ls")
 
+					tarFile := filepath.Join(roadRunnerLayer.Path, "roadrunner.tar.gz")
+
 					err := curl.Execute(pexec.Execution{
-						Args: []string{dependency.URI,
+						Args: []string{
+							dependency.URI,
 							"-o",
-							filepath.Join(roadRunnerLayer.Path, "roadrunner.tar.gz"),
+							tarFile,
+							"-v",
 						},
 						Stdout: os.Stdout,
 					})
 
+					if err != nil {
+						return err
+					}
+
 					err = tar.Execute(pexec.Execution{
-						Args: []string{"-xvf",
-							filepath.Join(roadRunnerLayer.Path, "roadrunner.tar.gz")},
+						Args: []string{
+							"-xvf",
+							tarFile,
+						},
 						Stdout: os.Stdout,
 					})
 
 					if err != nil {
-						panic(err)
+						return err
 					}
 
 					err = ls.Execute(pexec.Execution{
-						Args:   []string{filepath.Join(roadRunnerLayer.Path, "roadrunner.tar.gz")},
+						Args: []string{
+							filepath.Join(roadRunnerLayer.Path, "roadrunner.tar.gz"),
+						},
 						Stdout: os.Stdout,
 					})
 
