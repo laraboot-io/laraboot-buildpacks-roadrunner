@@ -255,7 +255,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 				Name: "http",
 				Metadata: map[string]interface{}{
 					"version-source": "buildpack.yml",
-					"version":        "some-bp-yml-version",
+					"version":        "2.1.1",
 					"launch":         true,
 				},
 			}
@@ -277,7 +277,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 							Name: "road-runner",
 							Metadata: map[string]interface{}{
 								"version-source": "buildpack.yml",
-								"version":        "some-bp-yml-version",
+								"version":        "2.1.1",
 								"launch":         true,
 							},
 						},
@@ -288,7 +288,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 			Expect(err).NotTo(HaveOccurred())
 			Expect(dependencyService.ResolveCall.Receives.Path).To(Equal(filepath.Join(cnbPath, "buildpack.toml")))
 			Expect(dependencyService.ResolveCall.Receives.Name).To(Equal("road-runner"))
-			Expect(dependencyService.ResolveCall.Receives.Version).To(Equal("some-bp-yml-version"))
+			Expect(dependencyService.ResolveCall.Receives.Version).To(Equal("2.1.1"))
 			Expect(dependencyService.ResolveCall.Receives.Stack).To(Equal("some-stack"))
 
 			Expect(buffer.String()).To(ContainSubstring("WARNING: Setting the server version through buildpack.yml will be deprecated soon in Apache HTTP Server Buildpack v2.0.0"))
