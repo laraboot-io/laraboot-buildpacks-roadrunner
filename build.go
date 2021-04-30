@@ -86,10 +86,12 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 			duration, prerr := clock.Measure(func() error {
 				return RunProcs(procmgr.Procs{
 					Processes: map[string]procmgr.Proc{
-						"make": {
+						"buildRoadRunner": {
 							Command: "make",
 							Args: []string{"-C",
-								fmt.Sprintf("%s", filepath.Join(roadRunnerLayer.Path, dependency.Name, dependency.Version)),
+								fmt.Sprintf("%s",
+									filepath.Join(roadRunnerLayer.Path,
+										fmt.Sprintf("%s-%s", dependency.Name, dependency.Version))),
 							},
 						},
 					},
