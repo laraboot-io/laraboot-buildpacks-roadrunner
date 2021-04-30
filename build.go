@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/paketo-buildpacks/php-web/procmgr"
 	"log"
+	"os"
 	"path/filepath"
 	"time"
 
@@ -81,30 +82,39 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 				return packit.BuildResult{}, err
 			}
 
+			logger.Action("Completed in %s", duration.Round(time.Millisecond))
+
 			logger.Subprocess("Building RoadRunner Server %s", dependency.Version)
 
-			duration, prerr := clock.Measure(func() error {
-				return RunProcs(procmgr.Procs{
-					Processes: map[string]procmgr.Proc{
-						"buildRoadRunner": {
-							Command: "make",
-							Args: []string{"-C",
-								fmt.Sprintf("%s",
-									filepath.Join(roadRunnerLayer.Path,
-										fmt.Sprintf("road-runner-%s", dependency.Version))),
+			dir := fmt.Sprintf("%s",
+				filepath.Join(roadRunnerLayer.Path,
+					fmt.Sprintf("road-runner-%s", dependency.Version)))
+
+			// Check if install succeded and source path is available for build
+			_, err = os.Stat(dir)
+			if err != nil {
+				buildDuration, prerr := clock.Measure(func() error {
+
+					// Run make to build RoadRunner specifying the directory (-C)
+					return RunProcs(procmgr.Procs{
+						Processes: map[string]procmgr.Proc{
+							"buildRoadRunner": {
+								Command: "make",
+								Args:    []string{"-C", dir},
 							},
 						},
-					},
+					})
+
 				})
 
-			})
+				if prerr != nil {
+					log.Println(prerr)
+					return packit.BuildResult{}, err
+				}
 
-			if prerr != nil {
-				log.Println(prerr)
-				return packit.BuildResult{}, err
+				logger.Action("Build in %s", buildDuration.Round(time.Millisecond))
 			}
 
-			logger.Action("Completed in %s", duration.Round(time.Millisecond))
 			logger.Break()
 
 			roadRunnerLayer.Metadata = map[string]interface{}{
