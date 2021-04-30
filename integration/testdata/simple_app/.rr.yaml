@@ -1,11 +1,19 @@
-rpc:
-  listen: tcp://127.0.0.1:6001
-
 server:
   command: "php worker.php"
 
-http:
-  address: "0.0.0.0:8080"
-
 logs:
   level: error
+
+http:
+  # host and port separated by semicolon
+  address: "0.0.0.0:8080"
+  # ...
+  middleware: [ "static" ]
+  # ...
+  static:
+    dir: "static"
+    forbid: [ ] # file extensions to forbid
+    request:
+      input: "custom-header"
+    response:
+      output: "output-header"
