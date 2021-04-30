@@ -108,7 +108,6 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 							dependency.URI,
 							"-o",
 							tarFile,
-							"-v",
 						},
 						Stderr: os.Stderr,
 					})
@@ -158,7 +157,21 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 					})
 
 					if err != nil {
-						logger.Detail("An error occurred while untaring dependency: %s\n", err)
+						logger.Detail("An error occurred while making: %s\n", err)
+						return err
+					}
+
+					err = makeBin.Execute(pexec.Execution{
+						Dir: roadRunnerDir,
+						Args: []string{
+							"install",
+						},
+						Stdout: os.Stdout,
+						Stderr: os.Stderr,
+					})
+
+					if err != nil {
+						logger.Detail("An error occurred while making: %s\n", err)
 						return err
 					}
 
