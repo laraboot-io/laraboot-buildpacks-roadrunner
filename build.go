@@ -2,6 +2,8 @@ package roadrunner
 
 import (
 	"fmt"
+	"github.com/paketo-buildpacks/php-web/procmgr"
+	"log"
 	"path/filepath"
 	"time"
 
@@ -74,9 +76,30 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 			duration, err := clock.Measure(func() error {
 				return dependencies.Install(dependency, context.CNBPath, roadRunnerLayer.Path)
 			})
+
 			if err != nil {
 				return packit.BuildResult{}, err
 			}
+
+			logger.Subprocess("Building RoadRunner Server %s", dependency.Version)
+
+			duration, prerr := clock.Measure(func() error {
+				return RunProcs(procmgr.Procs{
+					Processes: map[string]procmgr.Proc{
+						"make": {
+							Command: "make",
+							Args:    []string{},
+						},
+					},
+				})
+
+			})
+
+			if prerr != nil {
+				log.Println(prerr)
+				return packit.BuildResult{}, err
+			}
+
 			logger.Action("Completed in %s", duration.Round(time.Millisecond))
 			logger.Break()
 
