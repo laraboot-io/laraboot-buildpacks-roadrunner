@@ -117,7 +117,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 					Path:   filepath.Join(layersDir, "road-runner"),
 					Launch: true,
 					SharedEnv: packit.Environment{
-						"PATH.append": filepath.Join(layersDir, "road-runner", fmt.Sprintf("roadrunner-%s-linux-arm64", "2.1.1")),
+						"PATH.append": filepath.Join(layersDir, "road-runner", fmt.Sprintf("roadrunner-%s-linux-amd64", "2.1.1")),
 						"PATH.delim":  ":",
 					},
 					BuildEnv: packit.Environment{},
@@ -212,7 +212,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 						Path:   filepath.Join(layersDir, "road-runner"),
 						Launch: true,
 						SharedEnv: packit.Environment{
-							"PATH.append": filepath.Join(layersDir, "road-runner", fmt.Sprintf("roadrunner-%s-linux-arm64", "2.1.1")),
+							"PATH.append": filepath.Join(layersDir, "road-runner", fmt.Sprintf("roadrunner-%s-linux-amd64", "2.1.1")),
 							"PATH.delim":  ":",
 						},
 						BuildEnv: packit.Environment{},
