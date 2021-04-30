@@ -88,7 +88,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 
 			logger.Subprocess("Building RoadRunner Server %s", dependency.Version)
 
-			out, err := exec.Command("ls", fmt.Sprintf("%s", roadRunnerLayer.Path)).CombinedOutput()
+			out, err := exec.Command("ls", fmt.Sprintf("%s", context.CNBPath)).CombinedOutput()
 			fmt.Printf("LIST: %s\n", out)
 
 			dir := fmt.Sprintf("%s",
