@@ -101,12 +101,12 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 
 					err := curl.Execute(pexec.Execution{
 						Args: []string{
+							"-L",
 							dependency.URI,
 							"-o",
 							tarFile,
 							"-v",
 						},
-						Stdout: os.Stdout,
 						Stderr: os.Stderr,
 					})
 
