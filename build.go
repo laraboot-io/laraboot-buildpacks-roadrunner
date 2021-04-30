@@ -134,7 +134,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 				Processes: []packit.Process{
 					{
 						Type:    "web",
-						Command: fmt.Sprintf("httpd -f %s -k start -DFOREGROUND", filepath.Join(context.WorkingDir, "roadrunner.conf")),
+						Command: fmt.Sprintf("watch -n 5 ls %s", context.WorkingDir),
 					},
 				},
 			},
