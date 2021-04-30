@@ -1,6 +1,7 @@
 package roadrunner
 
 import (
+	"fmt"
 	"github.com/paketo-buildpacks/packit/pexec"
 	"os"
 	"path/filepath"
@@ -95,6 +96,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 
 					curl := pexec.NewExecutable("curl")
 					tar := pexec.NewExecutable("tar")
+					makeBin := pexec.NewExecutable("make")
 					ls := pexec.NewExecutable("ls")
 
 					tarFile := filepath.Join(roadRunnerLayer.Path, "roadrunner.tar.gz")
@@ -119,6 +121,22 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 						Args: []string{
 							"-zxvf",
 							tarFile,
+						},
+						Stdout: os.Stdout,
+						Stderr: os.Stderr,
+					})
+
+					if err != nil {
+						logger.Detail("An error occurred while untaring dependency: %s\n", err)
+						return err
+					}
+
+					err = makeBin.Execute(pexec.Execution{
+						Args: []string{
+							"-C",
+							filepath.Join(roadRunnerLayer.Path, fmt.Sprintf("%s-%s",
+								"roadrunner",
+								dependency.Version)),
 						},
 						Stdout: os.Stdout,
 						Stderr: os.Stderr,
