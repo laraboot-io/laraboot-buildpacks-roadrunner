@@ -47,7 +47,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 
 		version, ok := entry.Metadata["version"].(string)
 		if !ok {
-			version = "*"
+			version = ""
 		}
 
 		dependency, err := dependencies.Resolve(filepath.Join(context.CNBPath, "buildpack.toml"), "road-runner", version, context.Stack)
