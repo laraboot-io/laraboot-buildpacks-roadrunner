@@ -15,11 +15,11 @@ road-runner = "2.1.1"
 [[metadata.dependencies]]
 id = "road-runner"
 name = "road-runner"
-sha256 = "8d2dd324ea27bffb30f86a0192ae50ff2bd1150836d6bd4689486b8cd9b64f06"
+sha256 = "1c43c4a723373fbd7ad5d9148607361452445a8509af0a612cce41cfbed2c50f"
 source_sha256 = "8d2dd324ea27bffb30f86a0192ae50ff2bd1150836d6bd4689486b8cd9b64f06"
 stacks = ["io.buildpacks.stacks.bionic", "org.cloudfoundry.stacks.cflinuxfs3"]
 source = "https://github.com/spiral/roadrunner/archive/refs/tags/v2.1.1.tar.gz"
-uri = "https://github.com/spiral/roadrunner/archive/refs/tags/v2.1.1.tar.gz"
+uri = "https://github.com/spiral/roadrunner-binary/releases/download/v2.1.1/roadrunner-2.1.1-linux-arm64.tar.gz"
 version = "2.1.1"
 
 [[stacks]]

@@ -132,7 +132,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 				Processes: []packit.Process{
 					{
 						Type:    "web",
-						Command: "tail -f /dev/null",
+						Command: "rr serve -v -d",
 					},
 				},
 			},
@@ -224,7 +224,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 					Processes: []packit.Process{
 						{
 							Type:    "web",
-							Command: "tail -f /dev/null",
+							Command: "rr serve -v -d",
 						},
 					},
 				},
