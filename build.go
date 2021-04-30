@@ -1,10 +1,10 @@
 package roadrunner
 
 import (
-	"fmt"
 	"github.com/paketo-buildpacks/php-web/procmgr"
+	"io/ioutil"
 	"log"
-	"os"
+	"os/exec"
 	"path/filepath"
 	"time"
 
@@ -73,9 +73,17 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 			}
 			roadRunnerLayer.Launch, _ = entries.MergeLayerTypes("road-runner", context.Plan.Entries)
 
+			downloadDir, err := ioutil.TempDir(roadRunnerLayer.Path, "bin")
+
 			logger.Subprocess("Installing RoadRunner Server %s", dependency.Version)
 			duration, err := clock.Measure(func() error {
-				return dependencies.Install(dependency, context.CNBPath, roadRunnerLayer.Path)
+
+				// return dependencies.Install(dependency, context.CNBPath, roadRunnerLayer.Path)
+				return exec.Command("curl",
+					dependency.URI,
+					"-o", filepath.Join(downloadDir, "roadrunner.tar.gz"),
+				).Run()
+
 			})
 
 			if err != nil {
@@ -83,39 +91,60 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 			}
 
 			logger.Break()
+
+			logger.Subprocess("Untaring RoadRunner Server %s", dependency.Version)
+			duration, err = clock.Measure(func() error {
+				return exec.Command("tar",
+					"-xvf",
+					filepath.Join(downloadDir, "roadrunner.tar.gz"),
+					"--strip-components=1",
+					"-C", roadRunnerLayer.Path,
+				).Run()
+
+			})
+
+			logger.Subprocess("Building RoadRunner Server %s", dependency.Version)
+			duration, err = clock.Measure(func() error {
+
+				// return dependencies.Install(dependency, context.CNBPath, roadRunnerLayer.Path)
+				return exec.Command("curl",
+					dependency.URI,
+					"-o", filepath.Join(downloadDir, "roadrunner.tar.gz"),
+				).Run()
+
+			})
+
+			if err != nil {
+				return packit.BuildResult{}, err
+			}
+
+			logger.Break()
+
 			logger.Action("Completed in %s", duration.Round(time.Millisecond))
 
 			logger.Subprocess("Building RoadRunner Server %s", dependency.Version)
 
-			dir := fmt.Sprintf("%s", filepath.Join(roadRunnerLayer.Path))
+			buildDuration, prerr := clock.Measure(func() error {
 
-			//Check if install succeeded and source path is available for build
-			if _, derr := os.Stat(dir); os.IsNotExist(derr) {
-				log.Println(derr)
-				return packit.BuildResult{}, derr
-			} else {
-				buildDuration, prerr := clock.Measure(func() error {
-
-					// Run make to build RoadRunner specifying the directory (-C)
-					return RunProcs(procmgr.Procs{
-						Processes: map[string]procmgr.Proc{
-							"buildRoadRunner": {
-								Command: "make",
-								Args:    []string{"-C", dir},
-							},
+				// Run make to build RoadRunner specifying the directory (-C)
+				return RunProcs(procmgr.Procs{
+					Processes: map[string]procmgr.Proc{
+						"buildRoadRunner": {
+							Command: "make",
+							Args:    []string{"-C", roadRunnerLayer.Path},
 						},
-					})
-
+					},
 				})
 
-				if prerr != nil {
-					log.Println(derr)
-					return packit.BuildResult{}, derr
-				}
+			})
 
-				logger.Break()
-				logger.Action("Built in %s", buildDuration.Round(time.Millisecond))
+			if prerr != nil {
+				log.Println(prerr)
+				return packit.BuildResult{}, prerr
 			}
+
+			logger.Break()
+			logger.Action("Built in %s", buildDuration.Round(time.Millisecond))
 
 			roadRunnerLayer.Metadata = map[string]interface{}{
 				"built_at":  clock.Now().Format(time.RFC3339Nano),
