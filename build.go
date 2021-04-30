@@ -1,8 +1,6 @@
 package roadrunner
 
 import (
-	"fmt"
-	"github.com/paketo-buildpacks/packit/pexec"
 	"os"
 	"path/filepath"
 	"strings"
@@ -90,101 +88,17 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 
 			if strings.HasPrefix(dependency.URI, "https://") {
 
-				//// --------------
 				logger.Subprocess("Downloading RoadRunner Server %s", dependency.URI)
 				duration, err = clock.Measure(func() error {
 
-					goBin := pexec.NewExecutable("go")
-					curl := pexec.NewExecutable("curl")
-					tar := pexec.NewExecutable("tar")
-					makeBin := pexec.NewExecutable("make")
-					ls := pexec.NewExecutable("ls")
-
-					tarFile := filepath.Join(roadRunnerLayer.Path, "roadrunner.tar.gz")
-
-					err := curl.Execute(pexec.Execution{
-						Args: []string{
-							"-L",
-							dependency.URI,
-							"-o",
-							tarFile,
-						},
-						Stderr: os.Stderr,
-					})
-
-					if err != nil {
-						logger.Detail("An error occurred while downloading from source: %s\n", err)
-						return err
+					sourceDep := SourceDep{
+						dependency: dependency,
 					}
 
-					err = tar.Execute(pexec.Execution{
-						Args: []string{
-							"-zxvf",
-							tarFile,
-						},
-						Stdout: os.Stdout,
-						Stderr: os.Stderr,
-					})
+					err := sourceDep.WholeEnchilada(roadRunnerLayer.Path)
 
 					if err != nil {
-						logger.Detail("An error occurred while untaring dependency: %s\n", err)
-						return err
-					}
-
-					roadRunnerDir := filepath.Join(roadRunnerLayer.Path, fmt.Sprintf("%s-%s",
-						"roadrunner",
-						dependency.Version))
-
-					err = goBin.Execute(pexec.Execution{
-						Dir: roadRunnerDir,
-						Args: []string{
-							"mod",
-							"download",
-						},
-						Stdout: os.Stdout,
-						Stderr: os.Stderr,
-					})
-
-					if err != nil {
-						logger.Detail("An error occurred while go-mod download: %s\n", err)
-						return err
-					}
-
-					err = makeBin.Execute(pexec.Execution{
-						Dir:    roadRunnerDir,
-						Stdout: os.Stdout,
-						Stderr: os.Stderr,
-					})
-
-					if err != nil {
-						logger.Detail("An error occurred while making: %s\n", err)
-						return err
-					}
-
-					err = makeBin.Execute(pexec.Execution{
-						Dir: roadRunnerDir,
-						Args: []string{
-							"install",
-						},
-						Stdout: os.Stdout,
-						Stderr: os.Stderr,
-					})
-
-					if err != nil {
-						logger.Detail("An error occurred while making: %s\n", err)
-						return err
-					}
-
-					err = ls.Execute(pexec.Execution{
-						Args: []string{
-							filepath.Join(roadRunnerLayer.Path, "roadrunner.tar.gz"),
-						},
-						Stdout: os.Stdout,
-						Stderr: os.Stderr,
-					})
-
-					if err != nil {
-						logger.Detail("An error occurred listing: %s\n", err)
+						logger.Detail("An error occurred downloading from source: %s\n", err)
 						return err
 					}
 
@@ -196,39 +110,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 				}
 				logger.Break()
 				logger.Action("Completed in %s", duration.Round(time.Millisecond))
-				//// --------------
 
-				//logger.Subprocess("Building RoadRunner Server %s", dependency.Version)
-				//
-				//dir := fmt.Sprintf("%s", filepath.Join(roadRunnerLayer.Path))
-				//
-				////Check if install succeeded and source path is available for build
-				//if _, derr := os.Stat(dir); os.IsNotExist(derr) {
-				//	log.Println(derr)
-				//	return packit.BuildResult{}, derr
-				//} else {
-				//	buildDuration, prerr := clock.Measure(func() error {
-				//
-				//		// Run make to build RoadRunner specifying the directory (-C)
-				//		return RunProcs(procmgr.Procs{
-				//			Processes: map[string]procmgr.Proc{
-				//				"buildRoadRunner": {
-				//					Command: "make",
-				//					Args:    []string{"-C", dir},
-				//				},
-				//			},
-				//		})
-				//
-				//	})
-				//
-				//	if prerr != nil {
-				//		log.Println(derr)
-				//		return packit.BuildResult{}, derr
-				//	}
-				//
-				//	logger.Break()
-				//	logger.Action("Built in %s", buildDuration.Round(time.Millisecond))
-				//}
 			}
 
 			roadRunnerLayer.Metadata = map[string]interface{}{
