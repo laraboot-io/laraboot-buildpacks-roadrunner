@@ -51,7 +51,7 @@ func testLogging(t *testing.T, context spec.G, it spec.S) {
 		Expect(err).NotTo(HaveOccurred())
 
 		image, logs, err = pack.Build.
-			WithBuildpacks(goBuildpack, httpdBuildpack).
+			WithBuildpacks(phpBuildpack, goBuildpack, httpdBuildpack).
 			WithPullPolicy("never").
 			Execute(name, source)
 		Expect(err).NotTo(HaveOccurred())
@@ -88,7 +88,7 @@ func testLogging(t *testing.T, context spec.G, it spec.S) {
 			Expect(err).NotTo(HaveOccurred())
 
 			image, logs, err = pack.Build.
-				WithBuildpacks(goBuildpack, httpdBuildpack).
+				WithBuildpacks(phpBuildpack, goBuildpack, httpdBuildpack).
 				WithPullPolicy("never").
 				WithEnv(map[string]string{
 					"BP_ROADRUNNER_VERSION": "2.1.1",

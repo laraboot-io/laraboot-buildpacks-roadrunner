@@ -15,6 +15,7 @@ import (
 )
 
 var (
+	phpBuildpack          string
 	goBuildpack           string
 	httpdBuildpack        string
 	offlineHttpdBuildpack string
@@ -39,6 +40,7 @@ func TestIntegration(t *testing.T) {
 	_, err = toml.DecodeReader(file, &buildpackInfo)
 	Expect(err).NotTo(HaveOccurred())
 
+	phpBuildpack = "paketo-buildpacks/php-dist"
 	goBuildpack = "paketo-buildpacks/go-dist"
 
 	buildpackStore := occam.NewBuildpackStore()
