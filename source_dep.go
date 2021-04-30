@@ -1,6 +1,7 @@
 package roadrunner
 
 import (
+	"fmt"
 	"github.com/paketo-buildpacks/packit/pexec"
 	"github.com/paketo-buildpacks/packit/postal"
 	"log"
@@ -9,9 +10,10 @@ import (
 )
 
 type SourceDep struct {
-	dependency postal.Dependency
-	localPath  string
-	filePath   string
+	dependency   postal.Dependency
+	downloadPath string
+	localPath    string
+	filePath     string
 }
 
 func (sourcedep *SourceDep) Download(cwd string) error {
@@ -33,13 +35,14 @@ func (sourcedep *SourceDep) Download(cwd string) error {
 		return err
 	}
 
+	sourcedep.downloadPath = cwd
 	sourcedep.localPath = cwd
 	sourcedep.filePath = tarFile
 
 	return nil
 }
 
-func (sourcedep SourceDep) Untar() error {
+func (sourcedep *SourceDep) Untar() error {
 
 	tar := pexec.NewExecutable("tar")
 
@@ -56,6 +59,9 @@ func (sourcedep SourceDep) Untar() error {
 		return err
 	}
 
+	sourcedep.localPath = filepath.Join(sourcedep.downloadPath,
+		fmt.Sprintf("roadrunner-%s", sourcedep.dependency.Version))
+
 	return nil
 }
 
@@ -64,7 +70,7 @@ func (sourcedep SourceDep) ModDownload(cwd string) error {
 	goBin := pexec.NewExecutable("go")
 
 	err := goBin.Execute(pexec.Execution{
-		Dir: cwd,
+		Dir: sourcedep.localPath,
 		Args: []string{
 			"mod",
 			"download",
