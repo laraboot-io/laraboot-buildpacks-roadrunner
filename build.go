@@ -1,6 +1,7 @@
 package roadrunner
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"time"
@@ -119,8 +120,9 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 
 			logger.Process("Configuring environment")
 
-			logger.Process("Configuring environment")
-			roadRunnerLayer.SharedEnv.Append("PATH", filepath.Join(roadRunnerLayer.Path, "sbin"), ":")
+			roadRunnerLayer.SharedEnv.Append("PATH", filepath.Join(roadRunnerLayer.Path,
+				fmt.Sprint("roadrunner-%s-linux-arm64", dependency.Version)), ":")
+
 			logger.Environment(roadRunnerLayer.SharedEnv)
 
 			roadRunnerLayer.LaunchEnv.Override("APP_ROOT", context.WorkingDir)

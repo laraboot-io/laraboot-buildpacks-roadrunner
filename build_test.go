@@ -3,6 +3,7 @@ package roadrunner_test
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	roadrunner "github.com/laraboot-io/laraboot-buildpacks-roadrunner"
 	"io/ioutil"
 	"os"
@@ -116,7 +117,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 					Path:   filepath.Join(layersDir, "road-runner"),
 					Launch: true,
 					SharedEnv: packit.Environment{
-						"PATH.append": filepath.Join(layersDir, "road-runner", "sbin"),
+						"PATH.append": filepath.Join(layersDir, "road-runner", fmt.Sprint("roadrunner-%s-linux-arm64", "2.1.1")),
 						"PATH.delim":  ":",
 					},
 					BuildEnv: packit.Environment{},
@@ -211,7 +212,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 						Path:   filepath.Join(layersDir, "road-runner"),
 						Launch: true,
 						SharedEnv: packit.Environment{
-							"PATH.append": filepath.Join(layersDir, "road-runner", "sbin"),
+							"PATH.append": filepath.Join(layersDir, "road-runner", fmt.Sprint("roadrunner-%s-linux-arm64", "2.1.1")),
 							"PATH.delim":  ":",
 						},
 						BuildEnv: packit.Environment{},
