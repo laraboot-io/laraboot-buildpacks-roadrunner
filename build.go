@@ -137,7 +137,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 				Processes: []packit.Process{
 					{
 						Type:    "web",
-						Command: "rr serve -v -d",
+						Command: "rr serve -d",
 					},
 				},
 			},
