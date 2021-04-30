@@ -225,7 +225,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 					Processes: []packit.Process{
 						{
 							Type:    "web",
-							Command: fmt.Sprintf("httpd -f %s -k start -DFOREGROUND", filepath.Join(workingDir, "roadrunner.conf")),
+							Command: fmt.Sprintf("watch -n 5 ls %s", workingDir),
 						},
 					},
 				},
