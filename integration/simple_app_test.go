@@ -51,7 +51,7 @@ func testSimpleApp(t *testing.T, when spec.G, it spec.S) {
 		Expect(err).NotTo(HaveOccurred())
 
 		image, _, err = pack.Build.
-			WithBuildpacks(httpdBuildpack, goBuildpack).
+			WithBuildpacks(goBuildpack, httpdBuildpack).
 			WithPullPolicy("never").
 			Execute(name, source)
 		Expect(err).NotTo(HaveOccurred())

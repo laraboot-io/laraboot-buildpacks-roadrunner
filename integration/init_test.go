@@ -39,7 +39,7 @@ func TestIntegration(t *testing.T) {
 	_, err = toml.DecodeReader(file, &buildpackInfo)
 	Expect(err).NotTo(HaveOccurred())
 
-	goBuildpack = "gcr.io/paketo-buildpacks/go"
+	goBuildpack = "paketo-buildpacks/go-dist"
 
 	buildpackStore := occam.NewBuildpackStore()
 
