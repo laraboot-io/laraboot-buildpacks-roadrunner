@@ -7,6 +7,20 @@ import (
 )
 
 type DependencyService struct {
+	DeliverCall struct {
+		sync.Mutex
+		CallCount int
+		Receives  struct {
+			Dependency   postal.Dependency
+			CnbPath      string
+			LayerPath    string
+			PlatformPath string
+		}
+		Returns struct {
+			Error error
+		}
+		Stub func(postal.Dependency, string, string, string) error
+	}
 	InstallCall struct {
 		sync.Mutex
 		CallCount int
@@ -35,6 +49,22 @@ type DependencyService struct {
 		}
 		Stub func(string, string, string, string) (postal.Dependency, error)
 	}
+}
+
+func (f *DependencyService) Deliver(dependency postal.Dependency, cnbPath, layerPath string, platformPath string) error {
+
+	f.DeliverCall.Lock()
+	defer f.DeliverCall.Unlock()
+	f.DeliverCall.CallCount++
+	f.DeliverCall.Receives.Dependency = dependency
+	f.DeliverCall.Receives.CnbPath = cnbPath
+	f.DeliverCall.Receives.LayerPath = layerPath
+	f.DeliverCall.Receives.PlatformPath = platformPath
+	if f.DeliverCall.Stub != nil {
+		return f.DeliverCall.Stub(dependency, cnbPath, layerPath, platformPath)
+	}
+	return f.DeliverCall.Returns.Error
+
 }
 
 func (f *DependencyService) Install(param1 postal.Dependency, param2 string, param3 string) error {

@@ -1,6 +1,9 @@
 package roadrunner
 
 import (
+	"fmt"
+	"github.com/paketo-buildpacks/php-web/procmgr"
+	"os"
 	"path/filepath"
 	"time"
 
@@ -21,6 +24,7 @@ type EntryResolver interface {
 type DependencyService interface {
 	Resolve(path, name, version, stack string) (postal.Dependency, error)
 	Install(dependency postal.Dependency, cnbPath, layerPath string) error
+	Deliver(dependency postal.Dependency, cnbPath, layerPath, platformPath string) error
 }
 
 func Build(entries EntryResolver, dependencies DependencyService, clock chronos.Clock, logger LogEmitter) packit.BuildFunc {
@@ -71,8 +75,8 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 
 			logger.Subprocess("Installing RoadRunner Server %s", dependency.Version)
 			duration, err := clock.Measure(func() error {
-
-				return dependencies.Install(dependency, context.CNBPath, roadRunnerLayer.Path)
+				platformPath, _ := os.MkdirTemp("", "platform")
+				return dependencies.Deliver(dependency, context.CNBPath, roadRunnerLayer.Path, platformPath)
 
 			})
 
@@ -84,23 +88,28 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 			logger.Action("Completed in %s", duration.Round(time.Millisecond))
 
 			//// --------------
-			//logger.Subprocess("Downloading RoadRunner Server %s", dependency.URI)
-			//duration, err = clock.Measure(func() error {
-			//
-			//	return exec.Command("curl",
-			//		dependency.URI,
-			//		"-o",
-			//		filepath.Join(roadRunnerLayer.Path, "roadrunner.tar.gz"),
-			//	).Run()
-			//
-			//})
-			//
-			//if err != nil {
-			//	fmt.Printf("Error: %s\n", err)
-			//	return packit.BuildResult{}, err
-			//}
-			//logger.Break()
-			//logger.Action("Completed in %s", duration.Round(time.Millisecond))
+			logger.Subprocess("Downloading RoadRunner Server %s", dependency.URI)
+			duration, err = clock.Measure(func() error {
+
+				return RunProcs(procmgr.Procs{
+					Processes: map[string]procmgr.Proc{
+						"downloadRoadRunner": {
+							Command: "curl",
+							Args: []string{"-o",
+								dependency.URI,
+								filepath.Join(roadRunnerLayer.Path, "roadrunner.tar.gz")},
+						},
+					},
+				})
+
+			})
+
+			if err != nil {
+				fmt.Printf("Error: %s\n", err)
+				return packit.BuildResult{}, err
+			}
+			logger.Break()
+			logger.Action("Completed in %s", duration.Round(time.Millisecond))
 			//// --------------
 
 			//logger.Subprocess("Building RoadRunner Server %s", dependency.Version)
