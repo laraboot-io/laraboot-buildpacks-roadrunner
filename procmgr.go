@@ -42,18 +42,6 @@ func RunProcs(procs procmgr.Procs) error {
 	return msg.Err
 }
 
-func RunProcsSync(procs procmgr.Procs) error {
-	msgs := make(chan procMsg)
-
-	for procName, proc := range procs.Processes {
-		runProc(procName, proc, msgs)
-	}
-
-	msg := <-msgs
-	_, _ = fmt.Fprintln(os.Stderr, "process", msg.ProcName, "exited, status:", msg.Cmd.ProcessState)
-	return msg.Err
-}
-
 func runProc(procName string, proc procmgr.Proc, msgs chan procMsg) {
 	cmd := exec.Command(proc.Command, proc.Args...)
 	cmd.Stdout = os.Stdout

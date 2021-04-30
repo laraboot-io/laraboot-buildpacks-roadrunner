@@ -2,7 +2,7 @@ package roadrunner
 
 import (
 	"fmt"
-	"github.com/paketo-buildpacks/php-web/procmgr"
+	"github.com/paketo-buildpacks/packit/pexec"
 	"os"
 	"path/filepath"
 	"strings"
@@ -94,28 +94,31 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 				logger.Subprocess("Downloading RoadRunner Server %s", dependency.URI)
 				duration, err = clock.Measure(func() error {
 
-					err := RunProcsSync(procmgr.Procs{
-						Processes: map[string]procmgr.Proc{
-							"downloadRoadRunner": {
-								Command: "curl",
-								Args: []string{dependency.URI,
-									"-o",
-									filepath.Join(roadRunnerLayer.Path, "roadrunner.tar.gz"),
-								},
-							},
-							"untarRoadRunner": {
-								Command: "tar",
-								Args: []string{"-xvf",
-									filepath.Join(roadRunnerLayer.Path, "roadrunner.tar.gz"),
-								},
-							},
-							"debug": {
-								Command: "ls",
-								Args: []string{
-									filepath.Join(roadRunnerLayer.Path, "roadrunner"),
-								},
-							},
+					curl := pexec.NewExecutable("curl")
+					tar := pexec.NewExecutable("tar")
+					ls := pexec.NewExecutable("ls")
+
+					err := curl.Execute(pexec.Execution{
+						Args: []string{dependency.URI,
+							"-o",
+							filepath.Join(roadRunnerLayer.Path, "roadrunner.tar.gz"),
 						},
+						Stdout: os.Stdout,
+					})
+
+					err = tar.Execute(pexec.Execution{
+						Args: []string{"-xvf",
+							filepath.Join(roadRunnerLayer.Path, "roadrunner.tar.gz")},
+						Stdout: os.Stdout,
+					})
+
+					if err != nil {
+						panic(err)
+					}
+
+					err = ls.Execute(pexec.Execution{
+						Args:   []string{filepath.Join(roadRunnerLayer.Path, "roadrunner.tar.gz")},
+						Stdout: os.Stdout,
 					})
 
 					if err != nil {
