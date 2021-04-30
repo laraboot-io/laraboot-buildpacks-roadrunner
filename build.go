@@ -107,6 +107,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 							"-v",
 						},
 						Stdout: os.Stdout,
+						Stderr: os.Stderr,
 					})
 
 					if err != nil {
@@ -120,10 +121,11 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 							tarFile,
 						},
 						Stdout: os.Stdout,
+						Stderr: os.Stderr,
 					})
 
 					if err != nil {
-						logger.Detail("An error ocurred while untaring dependency: %s\n", err)
+						logger.Detail("An error occurred while untaring dependency: %s\n", err)
 						return err
 					}
 
@@ -132,10 +134,11 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 							filepath.Join(roadRunnerLayer.Path, "roadrunner.tar.gz"),
 						},
 						Stdout: os.Stdout,
+						Stderr: os.Stderr,
 					})
 
 					if err != nil {
-						logger.Detail("An error ocurred listing: %s\n", err)
+						logger.Detail("An error occurred listing: %s\n", err)
 						return err
 					}
 
