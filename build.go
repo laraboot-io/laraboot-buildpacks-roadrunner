@@ -131,12 +131,15 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 						return err
 					}
 
+					roadRunnerDir := filepath.Join(roadRunnerLayer.Path, fmt.Sprintf("%s-%s",
+						"roadrunner",
+						dependency.Version))
+
 					err = makeBin.Execute(pexec.Execution{
+						Dir: roadRunnerDir,
 						Args: []string{
 							"-C",
-							filepath.Join(roadRunnerLayer.Path, fmt.Sprintf("%s-%s",
-								"roadrunner",
-								dependency.Version)),
+							roadRunnerDir,
 						},
 						Stdout: os.Stdout,
 						Stderr: os.Stderr,
