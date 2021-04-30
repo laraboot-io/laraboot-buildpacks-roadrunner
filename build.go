@@ -94,6 +94,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 				logger.Subprocess("Downloading RoadRunner Server %s", dependency.URI)
 				duration, err = clock.Measure(func() error {
 
+					goBin := pexec.NewExecutable("go")
 					curl := pexec.NewExecutable("curl")
 					tar := pexec.NewExecutable("tar")
 					makeBin := pexec.NewExecutable("make")
@@ -135,12 +136,23 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 						"roadrunner",
 						dependency.Version))
 
-					err = makeBin.Execute(pexec.Execution{
+					err = goBin.Execute(pexec.Execution{
 						Dir: roadRunnerDir,
 						Args: []string{
-							"-C",
-							roadRunnerDir,
+							"mod",
+							"download",
 						},
+						Stdout: os.Stdout,
+						Stderr: os.Stderr,
+					})
+
+					if err != nil {
+						logger.Detail("An error occurred while go-mod download: %s\n", err)
+						return err
+					}
+
+					err = makeBin.Execute(pexec.Execution{
+						Dir:    roadRunnerDir,
 						Stdout: os.Stdout,
 						Stderr: os.Stderr,
 					})
