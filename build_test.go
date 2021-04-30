@@ -112,11 +112,14 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 		Expect(result).To(Equal(packit.BuildResult{
 			Layers: []packit.Layer{
 				{
-					Name:      "road-runner",
-					Path:      filepath.Join(layersDir, "road-runner"),
-					Launch:    true,
-					SharedEnv: packit.Environment{},
-					BuildEnv:  packit.Environment{},
+					Name:   "road-runner",
+					Path:   filepath.Join(layersDir, "road-runner"),
+					Launch: true,
+					SharedEnv: packit.Environment{
+						"PATH.append": filepath.Join(layersDir, "road-runner", "sbin"),
+						"PATH.delim":  ":",
+					},
+					BuildEnv: packit.Environment{},
 					LaunchEnv: packit.Environment{
 						"APP_ROOT.override":    workingDir,
 						"SERVER_ROOT.override": filepath.Join(layersDir, "road-runner"),
@@ -204,11 +207,14 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 			Expect(result).To(Equal(packit.BuildResult{
 				Layers: []packit.Layer{
 					{
-						Name:      "road-runner",
-						Path:      filepath.Join(layersDir, "road-runner"),
-						Launch:    true,
-						SharedEnv: packit.Environment{},
-						BuildEnv:  packit.Environment{},
+						Name:   "road-runner",
+						Path:   filepath.Join(layersDir, "road-runner"),
+						Launch: true,
+						SharedEnv: packit.Environment{
+							"PATH.append": filepath.Join(layersDir, "road-runner", "sbin"),
+							"PATH.delim":  ":",
+						},
+						BuildEnv: packit.Environment{},
 						LaunchEnv: packit.Environment{
 							"APP_ROOT.override":    workingDir,
 							"SERVER_ROOT.override": filepath.Join(layersDir, "road-runner"),
