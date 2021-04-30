@@ -109,7 +109,8 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 				},
 			},
 		})
-		Expect(err).NotTo(HaveOccurred())
+		// some-env-var-version is not a valid version
+		Expect(err).To(HaveOccurred())
 		Expect(result).To(Equal(packit.BuildResult{
 			Layers: []packit.Layer{
 				{
