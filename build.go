@@ -1,8 +1,6 @@
 package roadrunner
 
 import (
-	"fmt"
-	"os/exec"
 	"path/filepath"
 	"time"
 
@@ -85,25 +83,25 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 			logger.Break()
 			logger.Action("Completed in %s", duration.Round(time.Millisecond))
 
-			// --------------
-			logger.Subprocess("Downloading RoadRunner Server %s", dependency.URI)
-			duration, err = clock.Measure(func() error {
-
-				return exec.Command("curl",
-					dependency.URI,
-					"-o",
-					filepath.Join(roadRunnerLayer.Path, "roadrunner.tar.gz"),
-				).Run()
-
-			})
-
-			if err != nil {
-				fmt.Printf("Error: %s\n", err)
-				return packit.BuildResult{}, err
-			}
-			logger.Break()
-			logger.Action("Completed in %s", duration.Round(time.Millisecond))
-			// --------------
+			//// --------------
+			//logger.Subprocess("Downloading RoadRunner Server %s", dependency.URI)
+			//duration, err = clock.Measure(func() error {
+			//
+			//	return exec.Command("curl",
+			//		dependency.URI,
+			//		"-o",
+			//		filepath.Join(roadRunnerLayer.Path, "roadrunner.tar.gz"),
+			//	).Run()
+			//
+			//})
+			//
+			//if err != nil {
+			//	fmt.Printf("Error: %s\n", err)
+			//	return packit.BuildResult{}, err
+			//}
+			//logger.Break()
+			//logger.Action("Completed in %s", duration.Round(time.Millisecond))
+			//// --------------
 
 			//logger.Subprocess("Building RoadRunner Server %s", dependency.Version)
 			//
