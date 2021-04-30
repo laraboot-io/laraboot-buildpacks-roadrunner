@@ -163,7 +163,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 				Name: "http",
 				Metadata: map[string]interface{}{
 					"version-source": "BP_ROADRUNNER_VERSION",
-					"version":        "2.4.*",
+					"version":        "2.1.*",
 					"launch":         true,
 				},
 			}
@@ -194,7 +194,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 							Name: "road-runner",
 							Metadata: map[string]interface{}{
 								"version-source": "BP_ROADRUNNER_VERSION",
-								"version":        "2.4.*",
+								"version":        "2.1.*",
 								"launch":         true,
 							},
 						},
@@ -233,7 +233,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 
 			Expect(dependencyService.ResolveCall.Receives.Path).To(Equal(filepath.Join(cnbPath, "buildpack.toml")))
 			Expect(dependencyService.ResolveCall.Receives.Name).To(Equal("road-runner"))
-			Expect(dependencyService.ResolveCall.Receives.Version).To(Equal("2.4.*"))
+			Expect(dependencyService.ResolveCall.Receives.Version).To(Equal("2.1.*"))
 			Expect(dependencyService.ResolveCall.Receives.Stack).To(Equal("some-stack"))
 
 			Expect(dependencyService.InstallCall.Receives.Dependency).To(Equal(postal.Dependency{
