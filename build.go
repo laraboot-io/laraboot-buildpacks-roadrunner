@@ -1,7 +1,6 @@
 package roadrunner
 
 import (
-	"fmt"
 	"github.com/paketo-buildpacks/packit/pexec"
 	"os"
 	"path/filepath"
@@ -111,6 +110,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 					})
 
 					if err != nil {
+						logger.Detail("An error occurred while downloading from source: %s\n", err)
 						return err
 					}
 
@@ -123,6 +123,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 					})
 
 					if err != nil {
+						logger.Detail("An error ocurred while untaring dependency: %s\n", err)
 						return err
 					}
 
@@ -134,6 +135,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 					})
 
 					if err != nil {
+						logger.Detail("An error ocurred listing: %s\n", err)
 						return err
 					}
 
@@ -141,7 +143,6 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 				})
 
 				if err != nil {
-					fmt.Printf("Error: %s\n", err)
 					return packit.BuildResult{}, err
 				}
 				logger.Break()
