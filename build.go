@@ -82,6 +82,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 				return packit.BuildResult{}, err
 			}
 
+			logger.Break()
 			logger.Action("Completed in %s", duration.Round(time.Millisecond))
 
 			logger.Subprocess("Building RoadRunner Server %s", dependency.Version)
@@ -114,10 +115,9 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 					return packit.BuildResult{}, derr
 				}
 
-				logger.Action("Build in %s", buildDuration.Round(time.Millisecond))
+				logger.Break()
+				logger.Action("Built in %s", buildDuration.Round(time.Millisecond))
 			}
-
-			logger.Break()
 
 			roadRunnerLayer.Metadata = map[string]interface{}{
 				"built_at":  clock.Now().Format(time.RFC3339Nano),

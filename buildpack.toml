@@ -9,6 +9,9 @@ homepage = "https://github.com/laraboot-io/laraboot-buildpacks-roadrunner"
 include-files = ["bin/build", "bin/detect", "bin/run", "buildpack.toml"]
 pre-package = "./scripts/build.sh"
 
+[metadata.default-versions]
+road-runner = "2.1.1"
+
 [[metadata.dependencies]]
 id = "road-runner"
 name = "road-runner"
