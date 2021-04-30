@@ -121,7 +121,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 			logger.Process("Configuring environment")
 
 			roadRunnerLayer.SharedEnv.Append("PATH", filepath.Join(roadRunnerLayer.Path,
-				fmt.Sprint("roadrunner-%s-linux-arm64", dependency.Version)), ":")
+				fmt.Sprintf("roadrunner-%s-linux-arm64", dependency.Version)), ":")
 
 			logger.Environment(roadRunnerLayer.SharedEnv)
 
