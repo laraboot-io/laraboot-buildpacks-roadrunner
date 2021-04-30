@@ -98,10 +98,11 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 						Processes: map[string]procmgr.Proc{
 							"downloadRoadRunner": {
 								Command: "curl",
-								Args: []string{"-o",
+								Args: []string{dependency.URI,
+									"-o",
+									filepath.Join(roadRunnerLayer.Path, "roadrunner.tar.gz"),
 									"-v",
-									dependency.URI,
-									filepath.Join(roadRunnerLayer.Path, "roadrunner.tar.gz")},
+								},
 							},
 						},
 					})
