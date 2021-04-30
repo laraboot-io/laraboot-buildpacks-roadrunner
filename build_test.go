@@ -175,7 +175,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 				SourceSHA256: "some-source-sha",
 				Stacks:       []string{"some-stack"},
 				URI:          "some-uri",
-				Version:      "2.4.41",
+				Version:      "2.1.1",
 			}
 		})
 		it("builds httpd with that version", func() {
@@ -243,7 +243,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 				SourceSHA256: "some-source-sha",
 				Stacks:       []string{"some-stack"},
 				URI:          "some-uri",
-				Version:      "2.4.41",
+				Version:      "2.1.1",
 			}))
 			Expect(dependencyService.InstallCall.Receives.CnbPath).To(Equal(cnbPath))
 			Expect(dependencyService.InstallCall.Receives.LayerPath).To(Equal(filepath.Join(layersDir, "road-runner")))
