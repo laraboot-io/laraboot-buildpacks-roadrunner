@@ -18,6 +18,7 @@ name = "road-runner"
 sha256 = "8d2dd324ea27bffb30f86a0192ae50ff2bd1150836d6bd4689486b8cd9b64f06"
 source_sha256 = "8d2dd324ea27bffb30f86a0192ae50ff2bd1150836d6bd4689486b8cd9b64f06"
 stacks = ["io.buildpacks.stacks.bionic", "org.cloudfoundry.stacks.cflinuxfs3"]
+source = "https://github.com/spiral/roadrunner/archive/refs/tags/v2.1.1.tar.gz"
 uri = "https://github.com/spiral/roadrunner/archive/refs/tags/v2.1.1.tar.gz"
 version = "2.1.1"
 
