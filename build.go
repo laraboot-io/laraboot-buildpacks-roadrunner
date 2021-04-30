@@ -88,7 +88,9 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 					Processes: map[string]procmgr.Proc{
 						"make": {
 							Command: "make",
-							Args:    []string{},
+							Args: []string{"-C",
+								fmt.Sprintf("%s", filepath.Join(roadRunnerLayer.Path, dependency.Name, dependency.Version)),
+							},
 						},
 					},
 				})
