@@ -5,7 +5,6 @@ import (
 	"github.com/paketo-buildpacks/php-web/procmgr"
 	"os"
 	"path/filepath"
-	"strings"
 	"time"
 
 	"github.com/Masterminds/semver"
@@ -74,9 +73,9 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 			}
 			roadRunnerLayer.Launch, _ = entries.MergeLayerTypes("road-runner", context.Plan.Entries)
 
-			if !strings.HasPrefix(dependency.URI, "https://") {
-				return packit.BuildResult{}, err
-			}
+			//if !strings.HasPrefix(dependency.URI, "https://") {
+			//	return packit.BuildResult{}, err
+			//}
 
 			logger.Subprocess("Installing RoadRunner Server %s", dependency.Version)
 			duration, err := clock.Measure(func() error {
