@@ -13,10 +13,10 @@ import (
 
 func main() {
 	transport := cargo.NewTransport()
+	entryResolver := draft.NewPlanner()
 	dependencyService := postal.NewService(transport)
 	logEmitter := roadrunner.NewLogEmitter(os.Stdout)
 	versionParser := roadrunner.NewVersionParser()
-	entryResolver := draft.NewPlanner()
 
 	packit.Run(
 		roadrunner.Detect(versionParser),

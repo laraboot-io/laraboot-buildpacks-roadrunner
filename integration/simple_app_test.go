@@ -52,7 +52,6 @@ func testSimpleApp(t *testing.T, when spec.G, it spec.S) {
 
 		image, _, err = pack.Build.
 			WithBuildpacks(phpBuildpack, goBuildpack, httpdBuildpack).
-			WithPullPolicy("never").
 			Execute(name, source)
 		Expect(err).NotTo(HaveOccurred())
 

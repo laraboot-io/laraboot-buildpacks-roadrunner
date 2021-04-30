@@ -86,33 +86,6 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 			logger.Break()
 			logger.Action("Completed in %s", duration.Round(time.Millisecond))
 
-			//if strings.HasPrefix(dependency.URI, "https://") {
-			//
-			//	logger.Subprocess("Downloading RoadRunner Server %s", dependency.URI)
-			//	duration, err = clock.Measure(func() error {
-			//
-			//		sourceDep := SourceDep{
-			//			dependency: dependency,
-			//		}
-			//
-			//		err := sourceDep.WholeEnchilada(roadRunnerLayer.Path)
-			//
-			//		if err != nil {
-			//			logger.Detail("An error occurred while performing op: %s\n", err)
-			//			return err
-			//		}
-			//
-			//		return nil
-			//	})
-			//
-			//	if err != nil {
-			//		return packit.BuildResult{}, err
-			//	}
-			//	logger.Break()
-			//	logger.Action("Completed in %s", duration.Round(time.Millisecond))
-			//
-			//}
-
 			roadRunnerLayer.Metadata = map[string]interface{}{
 				"built_at":  clock.Now().Format(time.RFC3339Nano),
 				"cache_sha": dependency.SHA256,
