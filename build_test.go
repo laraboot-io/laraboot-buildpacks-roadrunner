@@ -143,7 +143,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 		Expect(dependencyService.ResolveCall.Receives.Version).To(Equal("some-env-var-version"))
 		Expect(dependencyService.ResolveCall.Receives.Stack).To(Equal("some-stack"))
 
-		Expect(dependencyService.InstallCall.Receives.Dependency).To(Equal(postal.Dependency{
+		Expect(dependencyService.DeliverCall.Receives.Dependency).To(Equal(postal.Dependency{
 			ID:           "road-runner",
 			SHA256:       "some-sha",
 			Source:       "some-source",
@@ -152,8 +152,8 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 			URI:          "some-uri",
 			Version:      "some-env-var-version",
 		}))
-		Expect(dependencyService.InstallCall.Receives.CnbPath).To(Equal(cnbPath))
-		Expect(dependencyService.InstallCall.Receives.LayerPath).To(Equal(filepath.Join(layersDir, "road-runner")))
+		Expect(dependencyService.DeliverCall.Receives.CnbPath).To(Equal(cnbPath))
+		Expect(dependencyService.DeliverCall.Receives.LayerPath).To(Equal(filepath.Join(layersDir, "road-runner")))
 	})
 
 	context("when the entry contains a version constraint", func() {
@@ -235,7 +235,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 			Expect(dependencyService.ResolveCall.Receives.Version).To(Equal("2.1.*"))
 			Expect(dependencyService.ResolveCall.Receives.Stack).To(Equal("some-stack"))
 
-			Expect(dependencyService.InstallCall.Receives.Dependency).To(Equal(postal.Dependency{
+			Expect(dependencyService.DeliverCall.Receives.Dependency).To(Equal(postal.Dependency{
 				ID:           "road-runner",
 				SHA256:       "some-sha",
 				Source:       "some-source",
@@ -244,8 +244,8 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 				URI:          "some-uri",
 				Version:      "2.1.1",
 			}))
-			Expect(dependencyService.InstallCall.Receives.CnbPath).To(Equal(cnbPath))
-			Expect(dependencyService.InstallCall.Receives.LayerPath).To(Equal(filepath.Join(layersDir, "road-runner")))
+			Expect(dependencyService.DeliverCall.Receives.CnbPath).To(Equal(cnbPath))
+			Expect(dependencyService.DeliverCall.Receives.LayerPath).To(Equal(filepath.Join(layersDir, "road-runner")))
 		})
 	})
 
@@ -349,7 +349,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 
 		context("when the dependency cannot be installed", func() {
 			it.Before(func() {
-				dependencyService.InstallCall.Returns.Error = errors.New("failed to install dependency")
+				dependencyService.DeliverCall.Returns.Error = errors.New("failed to install dependency")
 			})
 
 			it("returns an error", func() {
