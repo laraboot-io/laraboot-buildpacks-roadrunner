@@ -74,21 +74,21 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 			}
 			roadRunnerLayer.Launch, _ = entries.MergeLayerTypes("road-runner", context.Plan.Entries)
 
+			logger.Subprocess("Installing RoadRunner Server %s", dependency.Version)
+			duration, err := clock.Measure(func() error {
+				platformPath, _ := os.MkdirTemp("", "platform")
+				return dependencies.Deliver(dependency, context.CNBPath, roadRunnerLayer.Path, platformPath)
+
+			})
+
+			if err != nil {
+				return packit.BuildResult{}, err
+			}
+
+			logger.Break()
+			logger.Action("Completed in %s", duration.Round(time.Millisecond))
+
 			if strings.HasPrefix(dependency.URI, "https://") {
-
-				logger.Subprocess("Installing RoadRunner Server %s", dependency.Version)
-				duration, err := clock.Measure(func() error {
-					platformPath, _ := os.MkdirTemp("", "platform")
-					return dependencies.Deliver(dependency, context.CNBPath, roadRunnerLayer.Path, platformPath)
-
-				})
-
-				if err != nil {
-					return packit.BuildResult{}, err
-				}
-
-				logger.Break()
-				logger.Action("Completed in %s", duration.Round(time.Millisecond))
 
 				//// --------------
 				logger.Subprocess("Downloading RoadRunner Server %s", dependency.URI)
