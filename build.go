@@ -101,7 +101,18 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 								Args: []string{dependency.URI,
 									"-o",
 									filepath.Join(roadRunnerLayer.Path, "roadrunner.tar.gz"),
-									"-v",
+								},
+							},
+							"untarRoadRunner": {
+								Command: "tar",
+								Args: []string{"-zxvf",
+									filepath.Join(roadRunnerLayer.Path, "roadrunner.tar.gz"),
+								},
+							},
+							"debug": {
+								Command: "ls",
+								Args: []string{
+									filepath.Join(roadRunnerLayer.Path, "roadrunner"),
 								},
 							},
 						},
