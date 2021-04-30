@@ -52,7 +52,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 			Name: "http",
 			Metadata: map[string]interface{}{
 				"version-source": "BP_ROADRUNNER_VERSION",
-				"version":        "some-env-var-version",
+				"version":        "2.1.1",
 				"launch":         true,
 			},
 		}
@@ -66,7 +66,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 			SourceSHA256: "some-source-sha",
 			Stacks:       []string{"some-stack"},
 			URI:          "some-uri",
-			Version:      "some-env-var-version",
+			Version:      "2.1.1",
 		}
 
 		now := time.Now()
@@ -101,7 +101,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 						Name: "road-runner",
 						Metadata: map[string]interface{}{
 							"version-source": "BP_ROADRUNNER_VERSION",
-							"version":        "some-env-var-version",
+							"version":        "2.1.1",
 							"launch":         true,
 						},
 					},
@@ -140,7 +140,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 
 		Expect(dependencyService.ResolveCall.Receives.Path).To(Equal(filepath.Join(cnbPath, "buildpack.toml")))
 		Expect(dependencyService.ResolveCall.Receives.Name).To(Equal("road-runner"))
-		Expect(dependencyService.ResolveCall.Receives.Version).To(Equal("some-env-var-version"))
+		Expect(dependencyService.ResolveCall.Receives.Version).To(Equal("2.1.1"))
 		Expect(dependencyService.ResolveCall.Receives.Stack).To(Equal("some-stack"))
 
 		Expect(dependencyService.DeliverCall.Receives.Dependency).To(Equal(postal.Dependency{
@@ -150,7 +150,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 			SourceSHA256: "some-source-sha",
 			Stacks:       []string{"some-stack"},
 			URI:          "some-uri",
-			Version:      "some-env-var-version",
+			Version:      "2.1.1",
 		}))
 		Expect(dependencyService.DeliverCall.Receives.CnbPath).To(Equal(cnbPath))
 		Expect(dependencyService.DeliverCall.Receives.LayerPath).To(Equal(filepath.Join(layersDir, "road-runner")))
@@ -177,7 +177,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 				Version:      "2.1.1",
 			}
 		})
-		it("builds httpd with that version", func() {
+		it("builds roadrunner with that version", func() {
 			result, err := build(packit.BuildContext{
 				BuildpackInfo: packit.BuildpackInfo{
 					Name:    "Some Buildpack",
@@ -261,7 +261,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 			}
 		})
 
-		it("builds httpd with that version", func() {
+		it("builds roadrunner with that version", func() {
 			_, err := build(packit.BuildContext{
 				BuildpackInfo: packit.BuildpackInfo{
 					Name:    "Some Buildpack",
