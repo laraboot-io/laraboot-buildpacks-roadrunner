@@ -58,7 +58,7 @@ func testLogging(t *testing.T, context spec.G, it spec.S) {
 
 		Expect(logs).To(ContainLines(
 			MatchRegexp(fmt.Sprintf(`%s \d+\.\d+\.\d+`, buildpackInfo.Buildpack.Name)),
-			"  Resolving Roadrunner Server version",
+			"  Resolving RoadRunner Server version",
 			"    Candidate version sources (in priority order):",
 			`      buildpack.yml -> "2.1.*"`,
 			"",
@@ -101,7 +101,7 @@ func testLogging(t *testing.T, context spec.G, it spec.S) {
 				"  Resolving RoadRunner Server version",
 				"    Candidate version sources (in priority order):",
 				`      BP_ROADRUNNER_VERSION -> "2.1.1"`,
-				`      buildpack.yml    -> "2.4.*"`,
+				`      buildpack.yml    -> "2.1.*"`,
 				"",
 				MatchRegexp(`    Selected RoadRunner Server version \(using BP_ROADRUNNER_VERSION\): 2\.4\.\d+`),
 				"",
