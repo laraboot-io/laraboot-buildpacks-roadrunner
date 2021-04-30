@@ -102,25 +102,25 @@ func (sourcedep *SourceDep) WholeEnchilada(path string) error {
 
 	err := sourcedep.Download(path)
 	if err != nil {
-		log.Fatal("An error occurred downloading from source: %s\n", err)
+		log.Println("An error occurred downloading from source: %s\n", err)
 		return err
 	}
 
 	err = sourcedep.Untar()
 	if err != nil {
-		log.Fatal("An error occurred unpacking source tarball: %s\n", err)
+		log.Println("An error occurred unpacking source tarball: %s\n", err)
 		return err
 	}
 
 	err = sourcedep.ModDownload(path)
 	if err != nil {
-		log.Fatal("An error occurred downloading go modules: %s\n", err)
+		log.Println("An error occurred downloading go modules: %s\n", err)
 		return err
 	}
 
 	err = sourcedep.MakeCmd([]string{"build"})
 	if err != nil {
-		log.Fatal("An error occurred while building: %s\n", err)
+		log.Println("An error occurred while building: %s\n", err)
 		return err
 	}
 
