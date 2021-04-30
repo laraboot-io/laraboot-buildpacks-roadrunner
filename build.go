@@ -98,7 +98,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 					err := sourceDep.WholeEnchilada(roadRunnerLayer.Path)
 
 					if err != nil {
-						logger.Detail("An error occurred downloading from source: %s\n", err)
+						logger.Detail("An error occurred while performing op: %s\n", err)
 						return err
 					}
 
