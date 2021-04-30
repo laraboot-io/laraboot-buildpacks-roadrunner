@@ -46,7 +46,7 @@ func (sourcedep SourceDep) Untar() error {
 	err := tar.Execute(pexec.Execution{
 		Args: []string{
 			"-zxvf",
-			sourcedep.localPath,
+			sourcedep.filePath,
 		},
 		Stdout: os.Stdout,
 		Stderr: os.Stderr,
