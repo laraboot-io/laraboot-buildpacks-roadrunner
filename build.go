@@ -2,10 +2,6 @@ package roadrunner
 
 import (
 	"fmt"
-	"github.com/paketo-buildpacks/php-web/procmgr"
-	"log"
-	"os"
-	"os/exec"
 	"path/filepath"
 	"time"
 
@@ -88,40 +84,37 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 
 			logger.Subprocess("Building RoadRunner Server %s", dependency.Version)
 
-			out, err := exec.Command("ls", fmt.Sprintf("%s", context.WorkingDir)).CombinedOutput()
-			fmt.Printf("LIST: %s\n", out)
-
-			dir := fmt.Sprintf("%s",
-				filepath.Join(roadRunnerLayer.Path,
-					fmt.Sprintf("road-runner-%s", dependency.Version)))
+			//dir := fmt.Sprintf("%s",
+			//	filepath.Join(roadRunnerLayer.Path,
+			//		fmt.Sprintf("road-runner-%s", dependency.Version)))
 
 			// Check if install succeeded and source path is available for build
-			if _, derr := os.Stat(dir); os.IsNotExist(derr) {
-				log.Println(derr)
-				return packit.BuildResult{}, derr
-			} else {
-				buildDuration, prerr := clock.Measure(func() error {
-
-					// Run make to build RoadRunner specifying the directory (-C)
-					return RunProcs(procmgr.Procs{
-						Processes: map[string]procmgr.Proc{
-							"buildRoadRunner": {
-								Command: "make",
-								Args:    []string{"-C", dir},
-							},
-						},
-					})
-
-				})
-
-				if prerr != nil {
-					log.Println(derr)
-					return packit.BuildResult{}, derr
-				}
-
-				logger.Break()
-				logger.Action("Built in %s", buildDuration.Round(time.Millisecond))
-			}
+			//if _, derr := os.Stat(dir); os.IsNotExist(derr) {
+			//	log.Println(derr)
+			//	return packit.BuildResult{}, derr
+			//} else {
+			//	buildDuration, prerr := clock.Measure(func() error {
+			//
+			//		// Run make to build RoadRunner specifying the directory (-C)
+			//		return RunProcs(procmgr.Procs{
+			//			Processes: map[string]procmgr.Proc{
+			//				"buildRoadRunner": {
+			//					Command: "make",
+			//					Args:    []string{"-C", dir},
+			//				},
+			//			},
+			//		})
+			//
+			//	})
+			//
+			//	if prerr != nil {
+			//		log.Println(derr)
+			//		return packit.BuildResult{}, derr
+			//	}
+			//
+			//	logger.Break()
+			//	logger.Action("Built in %s", buildDuration.Round(time.Millisecond))
+			//}
 
 			roadRunnerLayer.Metadata = map[string]interface{}{
 				"built_at":  clock.Now().Format(time.RFC3339Nano),
