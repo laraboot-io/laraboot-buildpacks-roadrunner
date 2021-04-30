@@ -10,6 +10,7 @@ import (
 
 const PlanDependencyRoadRunner = "road-runner"
 const PlanDependencyGolang = "go"
+const PlanDependencyPhp = "php"
 
 //go:generate faux --interface Parser --output fakes/parser.go
 type Parser interface {
@@ -57,6 +58,16 @@ func Detect(parser Parser) packit.DetectFunc {
 				Version: "1.*",
 				Build:   true,
 				Launch:  false,
+			},
+		})
+
+		// Require Php
+		requirements = append(requirements, packit.BuildPlanRequirement{
+			Name: PlanDependencyPhp,
+			Metadata: BuildPlanMetadata{
+				Version: "7.*",
+				Build:   false,
+				Launch:  true,
 			},
 		})
 
