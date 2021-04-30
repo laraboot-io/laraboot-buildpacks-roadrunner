@@ -90,9 +90,11 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 				filepath.Join(roadRunnerLayer.Path,
 					fmt.Sprintf("road-runner-%s", dependency.Version)))
 
-			// Check if install succeded and source path is available for build
-			_, err = os.Stat(dir)
-			if err != nil {
+			// Check if install succeeded and source path is available for build
+			if _, derr := os.Stat(dir); os.IsNotExist(derr) {
+				log.Println(derr)
+				return packit.BuildResult{}, derr
+			} else {
 				buildDuration, prerr := clock.Measure(func() error {
 
 					// Run make to build RoadRunner specifying the directory (-C)
@@ -108,8 +110,8 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 				})
 
 				if prerr != nil {
-					log.Println(prerr)
-					return packit.BuildResult{}, err
+					log.Println(derr)
+					return packit.BuildResult{}, derr
 				}
 
 				logger.Action("Build in %s", buildDuration.Round(time.Millisecond))
