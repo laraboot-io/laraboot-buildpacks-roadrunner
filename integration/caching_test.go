@@ -57,7 +57,7 @@ func testCaching(t *testing.T, when spec.G, it spec.S) {
 		source, err := occam.Source(filepath.Join("testdata", "simple_app"))
 		Expect(err).ToNot(HaveOccurred())
 
-		build := pack.Build.WithBuildpacks(httpdBuildpack)
+		build := pack.Build.WithBuildpacks(httpdBuildpack, goBuildpack)
 
 		firstImage, _, err := build.Execute(name, source)
 		Expect(err).NotTo(HaveOccurred())

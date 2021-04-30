@@ -54,7 +54,7 @@ func testOffline(t *testing.T, when spec.G, it spec.S) {
 
 			image, _, err = pack.Build.
 				WithPullPolicy("never").
-				WithBuildpacks(offlineHttpdBuildpack).
+				WithBuildpacks(offlineHttpdBuildpack, goBuildpack).
 				WithNetwork("none").
 				Execute(name, source)
 			Expect(err).NotTo(HaveOccurred())

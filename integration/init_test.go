@@ -15,6 +15,7 @@ import (
 )
 
 var (
+	goBuildpack           string
 	httpdBuildpack        string
 	offlineHttpdBuildpack string
 	buildpackInfo         struct {
@@ -37,6 +38,8 @@ func TestIntegration(t *testing.T) {
 
 	_, err = toml.DecodeReader(file, &buildpackInfo)
 	Expect(err).NotTo(HaveOccurred())
+
+	goBuildpack = "gcr.io/paketo-buildpacks/go"
 
 	buildpackStore := occam.NewBuildpackStore()
 
