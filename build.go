@@ -96,6 +96,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 						"downloadRoadRunner": {
 							Command: "curl",
 							Args: []string{"-o",
+								"-v",
 								dependency.URI,
 								filepath.Join(roadRunnerLayer.Path, "roadrunner.tar.gz")},
 						},
