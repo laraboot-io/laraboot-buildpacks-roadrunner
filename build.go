@@ -5,6 +5,7 @@ import (
 	"github.com/paketo-buildpacks/php-web/procmgr"
 	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"time"
 
@@ -86,6 +87,9 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 			logger.Action("Completed in %s", duration.Round(time.Millisecond))
 
 			logger.Subprocess("Building RoadRunner Server %s", dependency.Version)
+
+			out, err := exec.Command("ls", fmt.Sprintf("%s", roadRunnerLayer.Path)).CombinedOutput()
+			fmt.Printf("LIST: %s\n", out)
 
 			dir := fmt.Sprintf("%s",
 				filepath.Join(roadRunnerLayer.Path,
