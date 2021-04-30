@@ -91,7 +91,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 							Args: []string{"-C",
 								fmt.Sprintf("%s",
 									filepath.Join(roadRunnerLayer.Path,
-										fmt.Sprintf("%s-%s", dependency.Name, dependency.Version))),
+										fmt.Sprintf("road-runner-%s", dependency.Version))),
 							},
 						},
 					},
