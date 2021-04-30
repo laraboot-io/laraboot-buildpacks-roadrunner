@@ -3,7 +3,6 @@ package roadrunner_test
 import (
 	"bytes"
 	"errors"
-	"fmt"
 	roadrunner "github.com/laraboot-io/laraboot-buildpacks-roadrunner"
 	"io/ioutil"
 	"os"
@@ -133,7 +132,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 				Processes: []packit.Process{
 					{
 						Type:    "web",
-						Command: fmt.Sprintf("watch -n 5 ls %s", workingDir),
+						Command: "tail -f /dev/null",
 					},
 				},
 			},
@@ -225,7 +224,7 @@ func testBuild(t *testing.T, context spec.G, it spec.S) {
 					Processes: []packit.Process{
 						{
 							Type:    "web",
-							Command: fmt.Sprintf("watch -n 5 ls %s", workingDir),
+							Command: "tail -f /dev/null",
 						},
 					},
 				},

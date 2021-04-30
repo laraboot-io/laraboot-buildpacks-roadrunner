@@ -1,7 +1,6 @@
 package roadrunner
 
 import (
-	"fmt"
 	"path/filepath"
 	"time"
 
@@ -134,7 +133,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 				Processes: []packit.Process{
 					{
 						Type:    "web",
-						Command: fmt.Sprintf("watch -n 5 ls %s", context.WorkingDir),
+						Command: "tail -f /dev/null",
 					},
 				},
 			},
