@@ -118,6 +118,11 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 			}
 
 			logger.Process("Configuring environment")
+
+			logger.Process("Configuring environment")
+			roadRunnerLayer.SharedEnv.Append("PATH", filepath.Join(roadRunnerLayer.Path, "sbin"), ":")
+			logger.Environment(roadRunnerLayer.SharedEnv)
+
 			roadRunnerLayer.LaunchEnv.Override("APP_ROOT", context.WorkingDir)
 			roadRunnerLayer.LaunchEnv.Override("SERVER_ROOT", roadRunnerLayer.Path)
 
