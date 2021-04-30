@@ -1,9 +1,9 @@
 package roadrunner
 
 import (
+	"fmt"
 	"github.com/paketo-buildpacks/php-web/procmgr"
 	"io/ioutil"
-	"log"
 	"os/exec"
 	"path/filepath"
 	"time"
@@ -87,6 +87,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 			})
 
 			if err != nil {
+				fmt.Printf("%s\n", err)
 				return packit.BuildResult{}, err
 			}
 
@@ -115,6 +116,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 			})
 
 			if err != nil {
+				fmt.Printf("%s\n", err)
 				return packit.BuildResult{}, err
 			}
 
@@ -139,7 +141,7 @@ func Build(entries EntryResolver, dependencies DependencyService, clock chronos.
 			})
 
 			if prerr != nil {
-				log.Println(prerr)
+				fmt.Printf("%s\n", prerr)
 				return packit.BuildResult{}, prerr
 			}
 
