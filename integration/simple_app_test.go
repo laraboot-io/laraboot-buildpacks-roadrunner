@@ -50,8 +50,7 @@ func testSimpleApp(t *testing.T, when spec.G, it spec.S) {
 		source, err = occam.Source(filepath.Join("testdata", "simple_app"))
 		Expect(err).NotTo(HaveOccurred())
 
-		image, _, err = pack.WithVerbose().
-			Build.
+		image, _, err = pack.WithVerbose().Build.
 			WithBuildpacks(phpBuildpack, goBuildpack, roadRunnerBuildpack).
 			WithTrustBuilder().
 			Execute(name, source)
@@ -62,6 +61,7 @@ func testSimpleApp(t *testing.T, when spec.G, it spec.S) {
 			WithPublish("8080").
 			WithPublishAll().
 			Execute(image.ID)
+
 		Expect(err).NotTo(HaveOccurred())
 
 		Eventually(container).Should(matchers.BeAvailable())
