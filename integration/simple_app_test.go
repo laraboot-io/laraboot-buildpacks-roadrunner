@@ -50,7 +50,7 @@ func testSimpleApp(t *testing.T, when spec.G, it spec.S) {
 		source, err = occam.Source(filepath.Join("testdata", "simple_app"))
 		Expect(err).NotTo(HaveOccurred())
 
-		image, _, err = pack.Build.
+		image, _, err = pack.WithVerbose().Build.
 			WithBuildpacks(phpBuildpack, goBuildpack, httpdBuildpack).
 			Execute(name, source)
 		Expect(err).NotTo(HaveOccurred())
