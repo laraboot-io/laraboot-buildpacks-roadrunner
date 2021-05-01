@@ -53,9 +53,9 @@ func testOffline(t *testing.T, when spec.G, it spec.S) {
 			Expect(err).NotTo(HaveOccurred())
 
 			image, _, err = pack.Build.
-				WithPullPolicy("never").
+				//WithPullPolicy("never").
 				WithBuildpacks(phpBuildpack, goBuildpack, roadRunnerBuildpack).
-				WithNetwork("none").
+				//WithNetwork("none").
 				Execute(name, source)
 			Expect(err).NotTo(HaveOccurred())
 
