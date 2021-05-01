@@ -90,6 +90,7 @@ function images::pull() {
 
   util::print::title "Setting default pack builder image..."
   pack config default-builder "${builder}"
+  pack config trusted-builders add "${builder}"
 
   local run_image lifecycle_image
   run_image="$(
