@@ -15,11 +15,11 @@ import (
 )
 
 var (
-	phpBuildpack          string
-	goBuildpack           string
-	httpdBuildpack        string
-	offlineHttpdBuildpack string
-	buildpackInfo         struct {
+	phpBuildpack               string
+	goBuildpack                string
+	roadRunnerBuildpack        string
+	offlineRoadRunnerBuildpack string
+	buildpackInfo              struct {
 		Buildpack struct {
 			ID   string
 			Name string
@@ -45,12 +45,12 @@ func TestIntegration(t *testing.T) {
 
 	buildpackStore := occam.NewBuildpackStore()
 
-	httpdBuildpack, err = buildpackStore.Get.
+	roadRunnerBuildpack, err = buildpackStore.Get.
 		WithVersion("1.2.3").
 		Execute(root)
 	Expect(err).NotTo(HaveOccurred())
 
-	offlineHttpdBuildpack, err = buildpackStore.Get.
+	offlineRoadRunnerBuildpack, err = buildpackStore.Get.
 		WithOfflineDependencies().
 		WithVersion("1.2.3").
 		Execute(root)
